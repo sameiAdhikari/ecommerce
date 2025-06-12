@@ -6,6 +6,8 @@ const initialState = {
   steps: 1,
   isCompleted: false,
   category: "",
+  filter: "all",
+  search: "",
   isCheckedRange: [false, false, false],
   productRating: [false, false, false, false, false],
 };
@@ -35,6 +37,12 @@ const appSlice = createSlice({
       updated[action.payload] = !updated[action.payload];
       state.productRating = updated;
     },
+    setSearch: (state, action) => {
+      state.search = action.payload;
+    },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
   },
 });
 
@@ -45,5 +53,7 @@ export const {
   setCategory,
   setIsCheckedRange,
   setProductRating,
+  setSearch,
+  setFilter,
 } = appSlice.actions;
 export default appSlice.reducer;

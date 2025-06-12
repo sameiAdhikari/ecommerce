@@ -34,7 +34,7 @@ function ProductSidebar() {
     dispatch(setProductRating(rating));
   };
   return (
-    <div className="md:bg-stone-100 md:py-5 md:px-4 ">
+    <div className="md:bg-stone-100 md:py-5 md:pl-[4rem]  border-t border-b border-gray-400">
       <div>
         <h3 className="md:text-xl md:font-semibold">Category</h3>
         <div className=" md:pl-4  ">
