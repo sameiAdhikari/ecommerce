@@ -60,3 +60,19 @@ export async function insertCardInfo(data) {
   if (error) throw new Error("error while inserting cardInformation");
   return cardInfo;
 }
+
+export async function getProducts() {
+  let { data: products, error } = await supabase.from("products").select("*");
+  if (error) throw new Error("could not fetch the data from the server");
+  return products;
+}
+
+export async function getProduct(productId) {
+  let { data: product, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", productId)
+    .single();
+  if (error) throw new Error("could not fetch the data from the server");
+  return product;
+}

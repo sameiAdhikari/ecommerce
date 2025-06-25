@@ -3,11 +3,14 @@ import {
   FaArrowLeft,
   FaArrowRight,
   FaHandHolding,
+  FaHeadset,
   FaHeart,
   FaQuora,
+  FaShippingFast,
 } from "react-icons/fa";
-import { RiDoubleQuotesL } from "react-icons/ri";
+import { RiDoubleQuotesL, RiRefund2Fill } from "react-icons/ri";
 import ValueBox from "../components/ValueBox";
+import { PiContactlessPaymentDuotone } from "react-icons/pi";
 
 const testimonials = [
   {
@@ -15,7 +18,7 @@ const testimonials = [
     image: "/people/1.png",
     rating: "⭐⭐⭐⭐⭐",
     feedback:
-      "I love shopping at SamJhana Store! The selection is amazing, and the prices are unbeatable. Highly recommend, especially for fashion and electronics. The customer service is also top notch! I had a small issue with my order, and they resolved it quickly.",
+      "I love shopping at SamJhana Store! The selection is amazing, and the prices are unbeatable. Highly recommend, especially for fashion and electronics. The customer service is also top notch! I had a small issue with my order, and they resolved it quickly. ",
   },
   {
     name: "Jane Smith",
@@ -60,8 +63,39 @@ const About = () => {
           </div>
         </div>
       </section>
-      {/* -------------------------------------value preposition section---------------------------------------------------- */}
+
+      {/* ------------------------------------------company values sections------------------------------------ */}
       <section>
+        <div className=" md:px-[4rem] md:pt-[4rem] md:pb-[3.5rem] text-center  bg-gray-400">
+          <h1 className="text-[2.5rem] font-semibold mb-6">Our Core Values</h1>
+          <p className="md:max-w-[60%] mx-auto text-[1.2rem] mb-8">
+            At Samei, we believe in the power of values to shape our business
+            and guide our actions. Our core values reflect who we are and what
+            we stand for.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <ValueBox image={"/core-value1.jpg"} title={"Customer Focus"}>
+              We put our customers at the heart of everything we do, striving to
+              exceed their expectations and deliver exceptional service.
+            </ValueBox>
+            <ValueBox image={"/core-value2.jpg"} title={"Integrity"}>
+              We conduct our business with honesty and transparency, building
+              trust with our customers and partners.
+            </ValueBox>
+            <ValueBox image={"/core-value3.jpg"} title={"Innovation"}>
+              We embrace change and continuously seek new ways to improve our
+              products and services.
+            </ValueBox>
+            <ValueBox image={"/core-value4.jpg"} title={"Sustainability"}>
+              We are committed to minimizing our environmental impact and
+              promoting sustainable practices in our operations.
+            </ValueBox>
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------------------------value preposition section---------------------------------------------------- */}
+      {/* <section>
         <div className=" md:px-[4rem] md:py-14 text-center bg-gray-300">
           <h1 className="text-[2.5rem] font-semibold">
             Every Moment You Spend Here Matters to Us
@@ -98,11 +132,11 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ---------------------------------------mission and vision section----------------------------------------------- */}
       <section>
-        <div className="px-[8rem] md:pt-[4rem] md:pb-[3rem] bg-gray-300">
+        <div className="px-[4rem] md:pt-[4rem] md:pb-[3rem] bg-gray-400">
           <h1 className="text-center text-4xl font-bold mb-[4rem] underline">
             Our Mission and Vision
           </h1>
@@ -175,29 +209,26 @@ const About = () => {
 
       {/* --------------------------------------- testimonial sections----------------------------------- */}
       <section>
-        <div className=" md:pb-[5rem] md:pt-[3rem] md:min-h-[25rem] bg-gray-300 ">
+        <div className=" md:pb-[5rem] md:px-[2.5rem] md:pt-[3rem] md:min-h-[25rem] bg-gray-400 ">
           <h1 className="text-center text-3xl font-bold mb-[6rem] underline">
             What Our Customers Say
           </h1>
-          {/* <div className="relative flex flex-col items-center justify-center "> */}
-          {/* <button className="flex items-center justify-center cursor-pointer absolute left-4 top-1/2 transform -translate-y-1/2 rounded-[5px] text-[1.2rem] md:p-2 md:w-10 md:h-10 bg-stone-100">
-              <FaArrowLeft />
-            </button> */}
-
           <div className="w-full md:w-[100%]  relative flex items-center">
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="flex justify-between relative flex-col md:mx-auto bg-stone-800/50  text-stone-300 md:px-[2rem] md:py-[1rem] md:w-[31%] md:min-h-[18rem] md:max-h-[18rem] rounded-[15px]"
+                className="flex justify-between relative flex-col md:mx-auto bg-stone-800/50  text-stone-300 md:px-[2rem] md:py-[0.5rem] md:w-[31%] md:min-h-[16rem] md:max-h-[16rem] rounded-[15px]"
               >
                 <RiDoubleQuotesL className="text-4xl absolute left-[2%] top-6" />
                 <img
                   src={`${testimonial.image}`}
-                  className="md:w-25 md:h-25 absolute top-[-17%] left-[50%] translate-x-[-50%] z-100"
+                  className="md:w-25 md:h-25 absolute top-[-22%] left-[50%] translate-x-[-50%] z-100"
                 />
 
                 <p className="md:mt-12 md:mb-4 text-justify">
-                  {testimonial.feedback}
+                  {testimonial.feedback.length > 255
+                    ? testimonial.feedback.slice(0, 255) + "..."
+                    : testimonial.feedback}
                 </p>
                 <div>
                   <p>{testimonial.rating}</p>
@@ -206,40 +237,58 @@ const About = () => {
               </div>
             ))}
           </div>
-          {/* 
-            <button className="flex items-center justify-center cursor-pointer absolute right-4 top-1/2 transform -translate-y-1/2 rounded-[5px] text-[1.2rem] md:p-2 md:w-10 md:h-10 bg-stone-100">
-              <FaArrowRight />
-            </button> */}
-          {/* </div> */}
         </div>
       </section>
 
-      {/* ------------------------------------------company values sections------------------------------------ */}
-      <section>
-        <div className=" md:px-[4rem] md:pt-[4rem] md:pb-[3.5rem] text-center  bg-gray-400">
-          <h1 className="text-[2.5rem] font-semibold mb-6">Our Core Values</h1>
-          <p className="md:max-w-[60%] mx-auto text-[1.2rem] mb-8">
-            At Samei, we believe in the power of values to shape our business
-            and guide our actions. Our core values reflect who we are and what
-            we stand for.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <ValueBox image={"/core-value1.jpg"} title={"Customer Focus"}>
-              We put our customers at the heart of everything we do, striving to
-              exceed their expectations and deliver exceptional service.
-            </ValueBox>
-            <ValueBox image={"/core-value2.jpg"} title={"Integrity"}>
-              We conduct our business with honesty and transparency, building
-              trust with our customers and partners.
-            </ValueBox>
-            <ValueBox image={"/core-value3.jpg"} title={"Innovation"}>
-              We embrace change and continuously seek new ways to improve our
-              products and services.
-            </ValueBox>
-            <ValueBox image={"/core-value4.jpg"} title={"Sustainability"}>
-              We are committed to minimizing our environmental impact and
-              promoting sustainable practices in our operations.
-            </ValueBox>
+      {/* ----------------------------------features sections----------------------------------------- */}
+      <section className=" z-30 ">
+        <div className="flex flex-col justify-between items-center bg-gray-300  md:px-15 md:py-20  ">
+          <div className="md:w-[100%] grid grid-cols-1 md:grid-cols-4 gap-5">
+            <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
+              <FaShippingFast className="text-9xl md:pr-5" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2 capitalize">
+                  free shipping
+                </h3>
+                <p className="text-gray-600">
+                  we do free shipping on all orders over $100.
+                </p>
+              </div>
+            </div>
+            <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
+              <FaHeadset className="text-9xl md:pr-5" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2 capitalize">
+                  24/7 supports
+                </h3>
+                <p className="text-gray-600">
+                  Our customer support team is available 24/7 to assist you.
+                </p>
+              </div>
+            </div>
+            <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
+              <RiRefund2Fill className="text-9xl md:pr-5" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2 capitalize">
+                  refund policy
+                </h3>
+                <p className="text-gray-600">
+                  We offer a hassle-free refund and return policy within 30
+                  days.
+                </p>
+              </div>
+            </div>
+            <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
+              <PiContactlessPaymentDuotone className="text-9xl md:pr-5" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2 capitalize">
+                  flexibble payment
+                </h3>
+                <p className="text-gray-600">
+                  We accept various payment methods for your convenience.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

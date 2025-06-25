@@ -39,8 +39,8 @@ function Checkout() {
     return width;
   };
   return (
-    <div className="w-full h-auto mt-23 ">
-      <div className="flex justify-between w-[70%] m-auto">
+    <div className="w-full h-auto mt-38 ">
+      <div className="flex justify-between w-[100%] m-auto">
         {checkOutTopic.map((topic, i) => (
           <div
             className="w-full flex justify-center items-center flex-col"
@@ -61,7 +61,7 @@ function Checkout() {
           </div>
         ))}
       </div>
-      <div className="md:w-[48%] md:m-auto md:mt-[-3.5rem] bg-gray-500 md:h-2">
+      <div className="md:w-[69%] md:m-auto md:mt-[-3.5rem] bg-gray-500 md:h-2">
         <div
           className="md:h-full bg-green-500"
           style={{ width: `${calculate()}%` }}

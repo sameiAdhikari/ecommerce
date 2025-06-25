@@ -2,18 +2,23 @@ import { AiFillFire } from "react-icons/ai";
 import { formatedSoldNumber } from "../helper/helper";
 import Star from "./Star";
 import { addDays, format } from "date-fns";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 function SingleProduct({ product }) {
+  // const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const description = product.shortDescription.trim();
+  const description = product?.short_description.trim();
   const today = new Date();
+  const handleNavigate = (productId) => {
+    navigate(`/products/${productId}`);
+  };
 
   return (
-    <div className="md:p-3 bg-gray-100  md:pb-6  shadow-xl rounded-lg md:m-3 md:mt-3 md:w-[30%]  mx-auto border border-gray-200  hover:shadow-2xl transition-shadow">
+    <div className="md:p-3   md:pb-6   rounded-lg md:m-3 md:mt-3 md:w-[31%]  mx-auto border border-gray-200  hover:shadow-2xl transition-shadow">
       <div>
         <img
-          src={`/${product.image}`}
+          src={product?.images?.[0]}
           alt="Saree"
           className="w-full h-60 object-cover rounded-lg"
         />
@@ -28,15 +33,16 @@ function SingleProduct({ product }) {
           </p>
           <div className="flex items-center justify-between md:mt-3">
             <span className="text-gray-800 text-md font-semibold">
-              Available: {product.stock}
+              Available: {product?.stock}
             </span>
-            <span className=" text-sm">
-              <Star size="20px" rating={product.rating} />
+            <span className=" text-sm flex gap-2">
+              <Star size="20px" rating={product?.ratings} />
+              <p>( {product?.ratings} )</p>
             </span>
           </div>
         </div>
         <div className="flex items-center gap-1 md:mt-2 capitalize">
-          <span>{`${formatedSoldNumber(product.sold)}`}</span> sold last month{" "}
+          <span>{`${formatedSoldNumber(product?.sold)}`}</span> sold last month{" "}
           {product.sold >= 100 && (
             <span>
               <AiFillFire className="text-xl text-orange-400" />
@@ -48,47 +54,31 @@ function SingleProduct({ product }) {
             <span className="text-green-600 capitalize">
               Best selling item{" "}
             </span>
-            in {product.category}
+            in {product?.category}
           </div>
         ) : (
           <p>Try out for better experience</p>
         )}
-        {/* <div className="md:my-2">
-          {product.limitedeal && (
-            <span className="bg-red-500 md:px-[4px]">Limited time deal</span>
-          )}
-        </div> */}
-        {/* {product.voucherDiscount && (
-          <div>
-            <span className="bg-green-500 md:px-[4px]">
-              save {product.voucherDiscount}%
-            </span>{" "}
-            with vouchers
-          </div>
-        )} */}
 
         <div className="mt-2">
           <p className="">
             <span className="text-indigo-500 text-2xl font-bold">
-              ${product.price - (product.discount || 0)}
+              ${(product?.price - (product?.discount || 0)).toFixed(2)}
             </span>
-            {product.discount && (
+            {product.discount > 0 && (
               <span className="md:ml-2 font-semibold text-[16px] text-gray-500">
                 was:
                 <span className=" md:ml-1 line-through  ">
-                  ${product.price}
+                  ${product?.price}
                 </span>
               </span>
             )}
           </p>
           <button
-            onClick={() => {
-              console.log("hello");
-              navigate("/");
-            }}
+            onClick={() => handleNavigate(product?.id)}
             className="mt-4 px-6 py-2 bg-indigo-500 text-white rounded-md md:cursor-pointer hover:bg-indigo-600 transition"
           >
-            Add to Cart
+            Buy Now
           </button>
         </div>
         <div className="md:flex md:mt-2">
@@ -100,7 +90,7 @@ function SingleProduct({ product }) {
                   {format(
                     addDays(
                       today,
-                      product.fastestDelivary
+                      product?.fastestDelivary
                     ).toLocaleDateString(),
                     "dd/MM/yyyy"
                   )}

@@ -1,6 +1,6 @@
 function SeniorManagementTeam() {
   return (
-    <section className="bg-gray-100 py-10">
+    <section className="bg-gray-300 py-10">
       <div className="w-[85%] md:m-auto">
         <h2 className="text-3xl font-bold text-center mb-6">
           Senior Management Team

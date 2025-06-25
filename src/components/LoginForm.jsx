@@ -27,7 +27,7 @@ function LoginForm() {
       onSubmit={handleSubmit(submitForm)}
       className="flex flex-col gap-2 mt-5 md:min-w-[45%] md:max-w-[45%]"
     >
-      <div className="flex flex-col md:mb-[-20px] md:h-[6.7rem]">
+      <div className="flex flex-col md:mb-[-20px] md:h-[6.2rem]">
         <label htmlFor="email" className=" font-semibold text-lg">
           Email Address
         </label>
@@ -51,7 +51,7 @@ function LoginForm() {
           )}
         </div>
       </div>
-      <div className="flex flex-col md:h-[6rem]">
+      <div className="flex flex-col md:h-[6.2rem]">
         <label htmlFor="password" className=" font-semibold text-lg">
           Password
         </label>
@@ -100,7 +100,7 @@ function LoginForm() {
           {isSubmitting ? "Logging..." : "Login"}
         </button>
       </div>
-      <div className="md:w-full flex justify-center items-center md:bg-stone-100 hover:md:bg-stone-400 text-stone-900 text-xl md:p-1.5 md:rounded-[20px] md:mt-10 cursor-pointer transition-colors duration-200">
+      <div className="md:w-full flex justify-center items-center md:bg-stone-100 hover:md:bg-stone-400 text-stone-900 text-xl md:p-1.5 md:rounded-[20px] md:mt-5 cursor-pointer transition-colors duration-200">
         <img
           width="22"
           height="22"

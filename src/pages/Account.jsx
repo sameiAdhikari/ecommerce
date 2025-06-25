@@ -1,6 +1,6 @@
 import { useState } from "react";
-import LoginForm from "../components/LoginForm";
 import LoginDetails from "../components/LoginDetails";
+import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 
 function Account() {
@@ -19,8 +19,8 @@ function Account() {
           alt="Login Background"
           className="absolute top-0 left-0 md:h-full md:w-full z-[-1]"
         />
-        <div className="w-[100%] md:mt-7 flex justify-center items-center flex-col">
-          <div className="flex justify-end md:w-[55%] gap-8 md:mb-5">
+        <div className="w-[100%] md:mt-25 flex justify-center items-center flex-col">
+          <div className="flex justify-end md:w-[55%] gap-8 ">
             <button
               className={` md:px-5 md:py-2 md:text-2xl md:w-[7rem] bg-black/40  ${
                 active ? "bg-black/80" : ""

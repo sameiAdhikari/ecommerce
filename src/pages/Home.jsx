@@ -24,7 +24,7 @@ const products = [
     discount: 20,
   },
   {
-    id: 1,
+    id: 2,
     name: "Elegant Saree",
     price: 120,
     image: "saree.jpg",
@@ -37,7 +37,7 @@ const products = [
     discount: 10,
   },
   {
-    id: 1,
+    id: 3,
     name: "Elegant Saree",
     price: 120,
     image: "saree.jpg",
@@ -50,7 +50,7 @@ const products = [
     discount: 5,
   },
   {
-    id: 1,
+    id: 4,
     name: "Elegant Saree",
     price: 120,
     image: "saree.jpg",
@@ -63,7 +63,7 @@ const products = [
     discount: 30,
   },
   {
-    id: 1,
+    id: 5,
     name: "Elegant Saree",
     price: 120,
     image: "saree.jpg",
@@ -75,7 +75,7 @@ const products = [
     stock: 5,
   },
   {
-    id: 1,
+    id: 6,
     name: "Elegant Saree",
     price: 120,
     image: "saree.jpg",
@@ -92,76 +92,6 @@ const Home = () => {
   return (
     <>
       <LandingPage />
-
-      {/* ----------------------------------features sections----------------------------------------- */}
-      <section className="md:my-10 md:px-[5rem] z-30 ">
-        <div className="flex flex-col justify-between items-center bg-gray-300 p-8 md:p-15 ">
-          <div className="md:w-[100%] grid grid-cols-1 md:grid-cols-4 gap-5">
-            <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
-              <FaShippingFast className="text-9xl md:pr-5" />
-              <div>
-                <h3 className="text-xl font-semibold mb-2 capitalize">
-                  free shipping
-                </h3>
-                <p className="text-gray-600">
-                  we do free shipping on all orders over $100.
-                </p>
-              </div>
-            </div>
-            <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
-              <FaHeadset className="text-9xl md:pr-5" />
-              <div>
-                <h3 className="text-xl font-semibold mb-2 capitalize">
-                  24/7 supports
-                </h3>
-                <p className="text-gray-600">
-                  Our customer support team is available 24/7 to assist you.
-                </p>
-              </div>
-            </div>
-            <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
-              <RiRefund2Fill className="text-9xl md:pr-5" />
-              <div>
-                <h3 className="text-xl font-semibold mb-2 capitalize">
-                  refund policy
-                </h3>
-                <p className="text-gray-600">
-                  We offer a hassle-free refund and return policy within 30
-                  days.
-                </p>
-              </div>
-            </div>
-            <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
-              <PiContactlessPaymentDuotone className="text-9xl md:pr-5" />
-              <div>
-                <h3 className="text-xl font-semibold mb-2 capitalize">
-                  flexibble payment
-                </h3>
-                <p className="text-gray-600">
-                  We accept various payment methods for your convenience.
-                </p>
-              </div>
-            </div>
-            {/* <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold mb-2">
-                Sustainable Practices
-              </h3>
-              <p className="text-gray-600">
-                Our commitment to sustainability drives our production
-                processes.
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold mb-2">
-                Customer Satisfaction
-              </h3>
-              <p className="text-gray-600">
-                We prioritize customer satisfaction with every purchase.
-              </p>
-            </div> */}
-          </div>
-        </div>
-      </section>
 
       {/*-------------------------------------- New Arrivals Section ---------------------------------*/}
 

@@ -1,7 +1,7 @@
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
-const defaultPosition = [51.505, -0.09]; // Default position if no location is provided
+const defaultPosition = [27.7103145, 85.3221634]; // Default position if no location is provided
 
 function SetViewOnLocation({ location }) {
   const map = useMap();
@@ -29,7 +29,7 @@ function Map({ location }) {
       />
       <SetViewOnLocation location={location} />
       {location && (
-        <Marker position={position}>
+        <Marker position={position || defaultPosition}>
           <Popup>
             Location: {location.lat}, {location.lng}
           </Popup>

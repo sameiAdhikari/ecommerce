@@ -39,12 +39,12 @@
   --image-opacity: 90%;
 
   /* Indigo */
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
+  --color-brand-50: #5d4037;
+  --color-brand-100: #fbc02d;
+  --color-brand-200: #2c160f;
+  --color-brand-500: #fff8e1;
+  --color-brand-600: #ff9205;
+  --color-brand-700: #311c0a;
   --color-brand-800: #3730a3;
   --color-brand-900: #312e81;
   --color-brand-300: #ffffff99;
@@ -63,3 +63,7 @@
 @theme {
   --color-lightCyan-100: #e0f7fa;
 }
+
+/* .active {
+  color: #0cce33;
+} */

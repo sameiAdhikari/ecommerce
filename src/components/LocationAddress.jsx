@@ -21,7 +21,7 @@ function LocationAddress() {
     fetchLocaton();
   }, [officeLocations, apiKey]);
   return (
-    <div className="bg-gray-200">
+    <div className="bg-gray-300">
       <div className="w-[85%] md:h-[40rem] flex justify-center items-center md:m-auto md:py-10 ">
         <div className="md:w-[40%] md:h-full flex flex-col justify-center items-start">
           <p className="uppercase md:text-xl ">get in touch</p>

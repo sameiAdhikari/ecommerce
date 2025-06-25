@@ -106,7 +106,7 @@ function RegisterForm() {
         </button>
       </div>
 
-      <div className="md:w-full flex justify-center items-center md:bg-stone-100 hover:md:bg-stone-400 text-stone-900 text-xl md:p-1.5 md:rounded-[20px] md:mt-7 cursor-pointer transition-colors duration-200">
+      <div className="md:w-full flex justify-center items-center md:bg-stone-100 hover:md:bg-stone-400 text-stone-900 text-xl md:p-1.5 md:rounded-[20px] md:mt-2 cursor-pointer transition-colors duration-200">
         <img
           width="22"
           height="22"

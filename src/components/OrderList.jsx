@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineDelete, MdRadioButtonUnchecked } from "react-icons/md";
-import { orders } from "../pages/Cart";
+import { useDispatch } from "react-redux";
+import { updateOrderList } from "../reduxSlicers/appSlicers";
 
-function OrderList({
-  order,
-  selectItems,
-  setSelectItems,
-  // selectAll,
-  setSelectAll,
-}) {
-  const [quantity, setQuantity] = useState(1);
-  // const [check, setCheck] = useState(true);
+// import { useDispatch, useSelector } from "react-redux";
+
+function OrderList({ order, selectItems, setSelectItems, setSelectAll }) {
+  const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(order.quantity || 1);
+  const increase = () => {
+    if (quantity > order.stock) return;
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    dispatch(updateOrderList({ productId: order.id, quantity: newQuantity }));
+  };
+  const decrease = () => {
+    if (quantity <= 1) return;
+    const newQuantity = quantity - 1;
+    setQuantity(newQuantity);
+    dispatch(updateOrderList({ productId: order.id, quantity: newQuantity }));
+  };
 
   const handleSelectItems = (id) => {
     if (selectItems.includes(id)) {
@@ -20,16 +29,8 @@ function OrderList({
     } else {
       const updatedOrder = [...selectItems, id];
       setSelectItems(updatedOrder);
-      setSelectAll(orders.length === updatedOrder.length);
+      // setSelectAll(orders.length === updatedOrder.length);
     }
-  };
-
-  const increase = () => {
-    setQuantity((c) => c + 1);
-  };
-  const decrease = () => {
-    if (quantity <= 1) return;
-    setQuantity((c) => c - 1);
   };
 
   // need to delete order from the order list with order id
@@ -37,7 +38,7 @@ function OrderList({
     // console.log(order.id);
   };
   return (
-    <div className=" capitalize grid grid-cols-[5rem_20%_25%_1fr_1fr_1fr_4rem] md:h-[8rem] items-center md:my-2 font-semibold text-stone-900 border-b border-stone-200 ">
+    <div className=" capitalize grid grid-cols-[3rem_20%_30%_1fr_1fr_1fr_4rem] md:h-[8rem] gap-3 items-center md:my-2 font-semibold text-stone-900 border-b border-gray-500 bg-gray-100">
       <div
         className="flex items-center justify-end"
         onClick={() => handleSelectItems(order.id)}
@@ -50,8 +51,8 @@ function OrderList({
       </div>
       <div>
         <img
-          src={order.image}
-          alt={order.title}
+          src={order.images[0]}
+          alt={order.images[0]}
           className="md:w-full md:h-[8rem] object-contain"
         />
       </div>
@@ -88,14 +89,14 @@ function OrderList({
         </div>
       </div>
       <div className="flex justify-center items-center">
-        $ {order.unitPrice}
+        $ {order.price.toFixed(2)}
       </div>
 
       <div className="flex justify-center items-center">
-        $ {order.unitPrice * quantity}
+        $ {(order.price * quantity).toFixed(2)}
       </div>
       <div
-        className="text-xl flex items-center justify-center cursor-pointer  md:w-8 md:h-8  hover:bg-gray-300 hover:rounded-full "
+        className="text-xl flex items-center justify-center cursor-pointer  md:w-10 md:h-10  hover:bg-gray-300 hover:rounded-full "
         onClick={deleteOrder}
       >
         {/* <IoIosClose /> */}

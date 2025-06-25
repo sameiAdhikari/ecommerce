@@ -3,7 +3,7 @@ import { FaMessage } from "react-icons/fa6";
 
 function OurTeam() {
   return (
-    <div className="bg-gray-100  md:pt-10 md:pb-20">
+    <div className="bg-gray-300  md:pt-10 md:pb-20">
       <h2 className="text-3xl font-bold text-center mb-6">Meet Our Team</h2>
       <div className="md:w-[85%] md:m-auto grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-4 rounded shadow">

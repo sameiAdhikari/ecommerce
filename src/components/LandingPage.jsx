@@ -1,6 +1,8 @@
+import { Link } from "react-router";
+
 function LandingPage() {
   return (
-    <section className="relative top-[4rem] flex flex-col md:flex-row justify-between bg-gradient-to-r from-indigo-50 to-indigo-200 md:mb-[10rem] md:p-16 h-[100vh] overflow-hidden">
+    <section className="relative top-[7rem] flex flex-col md:flex-row justify-between bg-gradient-to-r from-indigo-50 to-indigo-200 md:mb-[10rem] md:p-16 h-[100vh] overflow-hidden">
       {/* Left Content */}
       <div className="z-10 max-w-lg md:mt-20 md:pl-15 text-center md:text-left  ">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
@@ -11,9 +13,12 @@ function LandingPage() {
           and upgrade your wardrobe!
         </p>
         <div className="flex gap-4 justify-center md:justify-start">
-          <button className="px-6 py-3 bg-indigo-500 text-white font-semibold rounded-md shadow-md hover:bg-indigo-600 cursor-pointer transition">
+          <Link
+            to="/contact"
+            className="px-6 py-3 bg-indigo-500 text-white font-semibold rounded-md shadow-md hover:bg-indigo-600 cursor-pointer transition"
+          >
             Contact Us
-          </button>
+          </Link>
           <button className="px-6 py-3 cursor-pointer bg-gray-800 text-white font-semibold rounded-md shadow-md hover:bg-gray-900 transition">
             Buy Now
           </button>

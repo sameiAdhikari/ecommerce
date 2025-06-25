@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { SiTether } from "react-icons/si";
 
 const initialState = {
   value: 0,
@@ -6,10 +7,10 @@ const initialState = {
   steps: 1,
   isCompleted: false,
   category: "",
-  filter: "all",
   search: "",
-  isCheckedRange: [false, false, false],
-  productRating: [false, false, false, false, false],
+  categoryValue: "",
+  orderList: [],
+  priceRange: {},
 };
 const appSlice = createSlice({
   name: "app",
@@ -27,21 +28,25 @@ const appSlice = createSlice({
     setCategory: (state, action) => {
       state.category = action.payload;
     },
-    setIsCheckedRange: (state, action) => {
-      const updated = [...state.isCheckedRange];
-      updated[action.payload] = !updated[action.payload];
-      state.isCheckedRange = updated;
+    updatePriceRange: (state, action) => {
+      state.priceRange = action.payload;
     },
-    setProductRating: (state, action) => {
-      const updated = [...state.productRating];
-      updated[action.payload] = !updated[action.payload];
-      state.productRating = updated;
-    },
-    setSearch: (state, action) => {
+    updateSearch: (state, action) => {
       state.search = action.payload;
     },
-    setFilter: (state, action) => {
-      state.filter = action.payload;
+    setCategoryValue: (state, action) => {
+      state.categoryValue = action.payload;
+    },
+    updateOrderList: (state, action) => {
+      if (state.orderList.includes(action.payload.productId)) return;
+      state.orderList.find((order) => {
+        if (order.productId === action.payload.productId) {
+          (order.productId = action.payload.productId),
+            (order.quantity = action.payload.productId);
+        }
+      });
+      state.orderList = [...state.orderList, action.payload];
+      // console.log(pp);
     },
   },
 });
@@ -53,7 +58,10 @@ export const {
   setCategory,
   setIsCheckedRange,
   setProductRating,
-  setSearch,
+  updateSearch,
   setFilter,
+  setCategoryValue,
+  updateOrderList,
+  updatePriceRange,
 } = appSlice.actions;
 export default appSlice.reducer;
