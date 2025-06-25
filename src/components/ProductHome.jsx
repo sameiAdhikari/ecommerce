@@ -40,8 +40,6 @@ function ProductHome() {
         product.category.split(" ").join("-") === category.split(" ").join("-")
     );
   }
-  console.log(category);
-  console.log(categoryFilter);
   if (!priceRange || !("min" in priceRange) || !("max" in priceRange)) {
     filterWithPrice = categoryFilter;
   } else if (priceRange.min === 2000 && priceRange.max === 3000) {
@@ -94,7 +92,7 @@ function ProductHome() {
 
   return (
     <>
-      <div className="md:w-full md:h-auto md:mt-[7.6rem]  md:grid md:grid-cols-[17rem_1fr] ">
+      <div className="md:w-full md:h-auto md:mt-[7.6rem]  md:grid md:grid-cols-[15rem_1fr] ">
         <ProductSidebar />
         <div className="md:flex md:flex-wrap border  border-gray-400 md:p-3">
           <div className="md:w-full  md:h-10 md:flex md:items-center md:justify-between border-b md:pb-3 md:mr-7">

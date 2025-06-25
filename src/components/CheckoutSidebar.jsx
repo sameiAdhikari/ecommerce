@@ -52,7 +52,7 @@ function CheckoutSidebar() {
 
   return (
     <div
-      className={`fixed top-0 right-0 w-[11.4rem] h-full flex-col px-5 text-center mt-[6rem]`}
+      className={`fixed top-0 right-0 w-[13.5rem] h-[86vh] flex-col px-5 text-center mt-[6rem]  overflow-y-scroll`}
       style={{ display: isCartPage ? "none" : "flex" }}
     >
       <p className="flex items-center gap-1 bg-gradient-to-r from-blue-400 to-blue-500 p-2 rounded mb-2">

@@ -38,15 +38,21 @@ const appSlice = createSlice({
       state.categoryValue = action.payload;
     },
     updateOrderList: (state, action) => {
-      if (state.orderList.includes(action.payload.productId)) return;
-      state.orderList.find((order) => {
-        if (order.productId === action.payload.productId) {
-          (order.productId = action.payload.productId),
-            (order.quantity = action.payload.productId);
-        }
-      });
+      const existingProduct = state.orderList.find(
+        (order) => order.productId === action.payload.productId
+      );
+      if (existingProduct) {
+        // If the product already exists, update the quantity
+        existingProduct.quantity = action.payload.quantity;
+        return;
+      }
       state.orderList = [...state.orderList, action.payload];
       // console.log(pp);
+    },
+    deleteOrderList: (state, action) => {
+      state.orderList = state.orderList.filter(
+        (order) => order.productId !== action.payload
+      );
     },
   },
 });
@@ -63,5 +69,6 @@ export const {
   setCategoryValue,
   updateOrderList,
   updatePriceRange,
+  deleteOrderList,
 } = appSlice.actions;
 export default appSlice.reducer;

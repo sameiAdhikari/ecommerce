@@ -85,12 +85,12 @@ function Header() {
       <div
         className={`fixed top-0 left-0 z-20 flex justify-between items-center px-[4rem] text-[var(--color-brand-500)] bg-gray-800 h-[5rem] shadow-xl/30 shadow-indigo-700 w-full`}
       >
-        <button
+        {/* <button
           className="fixed top-35 left-0 p-4 rounded-full bg-red-500 z-50 "
           // onClick={handleUpload}
         >
           upload
-        </button>
+        </button> */}
         <div className="flex align-middle">
           <Link to="/">
             <img
@@ -155,10 +155,13 @@ function Header() {
       <section>
         <div
           className={`fixed top-[5rem] left-0 z-99999 md:flex md:items-center ${
-            orderList.length > 0 ? "w-[88%]" : "w-full"
+            orderList.length > 0 ? "w-[86%]" : "w-full"
           }  md:gap-6 capitalize  md:h-[2.7rem] bg-gray-700 md:text-stone-50 font-semibold`}
         >
-          <button className="flex items-center gap-1 font-semibold cursor-pointer md:border md:border-transparent hover:border-stone-100 md:py-[6px] md:px-3 rounded-[2px] md:ml-5">
+          <button
+            className="flex items-center gap-1 font-semibold cursor-pointer md:border md:border-transparent hover:border-stone-100 md:py-[6px] md:px-3 rounded-[2px] md:ml-5"
+            onClick={() => handleCategory("all")}
+          >
             <TiThMenu className="md:text-2xl cursor-pointer" />
             <span> All</span>
           </button>

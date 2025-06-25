@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineDelete, MdRadioButtonUnchecked } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { updateOrderList } from "../reduxSlicers/appSlicers";
+import { deleteOrderList, updateOrderList } from "../reduxSlicers/appSlicers";
 
 // import { useDispatch, useSelector } from "react-redux";
 
@@ -34,8 +34,8 @@ function OrderList({ order, selectItems, setSelectItems, setSelectAll }) {
   };
 
   // need to delete order from the order list with order id
-  const deleteOrder = () => {
-    // console.log(order.id);
+  const deleteOrder = (id) => {
+    dispatch(deleteOrderList(id));
   };
   return (
     <div className=" capitalize grid grid-cols-[3rem_20%_30%_1fr_1fr_1fr_4rem] md:h-[8rem] gap-3 items-center md:my-2 font-semibold text-stone-900 border-b border-gray-500 bg-gray-100">
@@ -53,15 +53,15 @@ function OrderList({ order, selectItems, setSelectItems, setSelectAll }) {
         <img
           src={order.images[0]}
           alt={order.images[0]}
-          className="md:w-full md:h-[8rem] object-contain"
+          className="md:w-full md:h-[8rem] object-cover"
         />
       </div>
       <div>
-        <h3 className="capitalize font-semibold md:mb-2">{order.title}</h3>
+        <h3 className="capitalize font-semibold md:mb-2">{order?.title}</h3>
         <p className="md:text-sm text-stone-600 md:pr-3">
-          {order.description.slice().length > 100
-            ? order.description.slice(0, 100) + "..."
-            : order.description}
+          {order?.descriptions.slice().length > 100
+            ? order?.descriptions.slice(0, 100) + "..."
+            : order?.description}
         </p>
       </div>
       <div className="flex justity-between items-center md:m-auto">
@@ -89,17 +89,16 @@ function OrderList({ order, selectItems, setSelectItems, setSelectAll }) {
         </div>
       </div>
       <div className="flex justify-center items-center">
-        $ {order.price.toFixed(2)}
+        $ {order?.price.toFixed(2)}
       </div>
 
       <div className="flex justify-center items-center">
-        $ {(order.price * quantity).toFixed(2)}
+        $ {(order?.price * quantity).toFixed(2)}
       </div>
       <div
         className="text-xl flex items-center justify-center cursor-pointer  md:w-10 md:h-10  hover:bg-gray-300 hover:rounded-full "
-        onClick={deleteOrder}
+        onClick={() => deleteOrder(order?.id)}
       >
-        {/* <IoIosClose /> */}
         <MdOutlineDelete />
       </div>
     </div>

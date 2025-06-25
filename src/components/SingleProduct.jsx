@@ -15,8 +15,8 @@ function SingleProduct({ product }) {
   };
 
   return (
-    <div className="md:p-3   md:pb-6   rounded-lg md:m-3 md:mt-3 md:w-[31%]  mx-auto border border-gray-200  hover:shadow-2xl transition-shadow">
-      <div>
+    <div className="md:p-3   md:pb-6 cursor-pointer  rounded-lg md:m-3 md:mt-3 md:w-[31%]  mx-auto border border-gray-200  hover:shadow-2xl transition-shadow">
+      <div onClick={() => handleNavigate(product?.id)}>
         <img
           src={product?.images?.[0]}
           alt="Saree"
@@ -26,38 +26,45 @@ function SingleProduct({ product }) {
 
       <div>
         <div>
-          <p className="font-semibold  md:text-md my-2 md:leading-5">
+          <p className="text-[1.2rem] pt-2">
+            <span className="font-semibold text-indigo-100">Brand :</span>{" "}
+            {product.brand}
+          </p>
+          <p className="font-semibold  md:text-md  md:leading-5">
             {description.length <= 90
               ? description
               : description.slice(0, 90) + "..."}
           </p>
           <div className="flex items-center justify-between md:mt-3">
-            <span className="text-gray-800 text-md font-semibold">
-              Available: {product?.stock}
+            <span className=" text-[1.2rem]">
+              Available:<span className="font-semibold"> {product?.stock}</span>
             </span>
             <span className=" text-sm flex gap-2">
-              <Star size="20px" rating={product?.ratings} />
+              <Star size="22px" rating={product?.ratings} />
               <p>( {product?.ratings} )</p>
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-1 md:mt-2 capitalize">
-          <span>{`${formatedSoldNumber(product?.sold)}`}</span> sold last month{" "}
-          {product.sold >= 100 && (
+        <div className="flex items-center gap-1  capitalize">
+          <span className="font-semibold">{`${formatedSoldNumber(
+            product?.sold
+          )}`}</span>{" "}
+          sold as of now
+          {product.sold >= 10000 && (
             <span>
-              <AiFillFire className="text-xl text-orange-400" />
+              <AiFillFire className="text-[1.2rem] text-orange-400" />
             </span>
           )}
         </div>
-        {product.sold >= 80 ? (
+        {product.sold >= 100000 ? (
           <div>
             <span className="text-green-600 capitalize">
-              Best selling item{" "}
+              most popular product
             </span>
             in {product?.category}
           </div>
         ) : (
-          <p>Try out for better experience</p>
+          <p>Hidden gem — Explore and Enjoy</p>
         )}
 
         <div className="mt-2">

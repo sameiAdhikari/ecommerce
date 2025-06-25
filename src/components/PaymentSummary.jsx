@@ -8,7 +8,6 @@ function PaymentSummary({ orders }) {
   const [promocode, setPromocode] = useState("");
   const navigate = useNavigate();
   const finalPrice = 9000;
-  console.log(orders);
   function handleCheckout() {
     if (finalPrice >= 100) {
       navigate("/checkout");
@@ -18,7 +17,7 @@ function PaymentSummary({ orders }) {
   }
   return (
     <div className="sticky top-30 ">
-      <div className=" md:w-full md:h-auto md:px-3 ">
+      <div className=" md:w-full md:h-auto md:pl-3 ">
         <h3 className="capitalize md:text-xl md:font-semibold  md:mb-2.5 bg-yellow-600 md:h-[3rem] w-[100%] text-center pt-2 text-stone-100">
           order summary
         </h3>

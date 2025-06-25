@@ -24,7 +24,7 @@ const LoginFormPage = lazy(() => import("./pages/Account"));
 const CartPage = lazy(() => import("./pages/Cart"));
 const ContactPage = lazy(() => import("./pages/Contact"));
 const CheckOutpage = lazy(() => import("./pages/Checkout"));
-const ElectronicPage = lazy(() => import("./components/ElectronicPageDetails"));
+const ProductDetailsPage = lazy(() => import("./components/ProductDetails"));
 const routerObj = createBrowserRouter([
   {
     path: "/",
@@ -37,7 +37,7 @@ const routerObj = createBrowserRouter([
         element: <Products />,
         children: [
           { index: true, element: <ProductHomePage /> },
-          { path: "/products/:productId", element: <ElectronicPage /> },
+          { path: "/products/:productId", element: <ProductDetailsPage /> },
         ],
       },
       { path: "/account", element: <LoginFormPage /> },

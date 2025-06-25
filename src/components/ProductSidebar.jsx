@@ -38,22 +38,7 @@ function ProductSidebar() {
     }
   };
   return (
-    <div className=" md:py-5 md:pl-[4rem]  border-t border-b border-gray-400">
-      {/* <div>
-        <h3 className="md:text-xl md:font-semibold">Category</h3>
-        <div className=" md:pl-4  ">
-          {categories.map((category) => (
-            <div key={category.replace(" ", "")}>
-              <button
-                className="capitalize hover:text-indigo-500 cursor-pointer"
-                onClick={() => handleProductCategory(category)}
-              >
-                {category}
-              </button>
-            </div>
-          ))}
-        </div>
-      </div> */}
+    <div className=" md:py-5 md:pl-[2rem]  border-t border-b border-gray-400">
       <div>
         <h3 className="md:text-xl md:font-semibold md:mt-3">Price Range</h3>
         <div className="flex flex-col">
@@ -76,7 +61,7 @@ function ProductSidebar() {
                   className="md:w-4 md:h-4 cursor-pointer"
                 />
                 {index === 2 ? (
-                  <label>Above ${index * 1000}</label>
+                  <label>${index * 1000} & Above </label>
                 ) : (
                   <label>
                     ${index * 1000}-${index * 1000 + 1000}
@@ -102,11 +87,25 @@ function ProductSidebar() {
                 checked={isChecked}
                 onChange={() => handleProductRating(index)}
               />
-              <p className="flex gap-1">
-                <Star ratingLength={5 - index} rating={5 - index} size="16px" />
-                &Above
-                {/* <span className="md:ml-2"> {5 - index} Star</span> */}
-              </p>
+              {index === 0 ? (
+                <div className="flex gap-1 items-center">
+                  <Star
+                    ratingLength={5 - index}
+                    rating={5 - index}
+                    size="16px"
+                  />
+                  only
+                </div>
+              ) : (
+                <div className="flex gap-1 items-center">
+                  <Star
+                    ratingLength={5 - index}
+                    rating={5 - index}
+                    size="16px"
+                  />
+                  & Up
+                </div>
+              )}
             </div>
           );
         })}

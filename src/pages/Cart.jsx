@@ -10,6 +10,7 @@ import OrderList from "../components/OrderList";
 import supabase from "../lib/supabase";
 import { useSelector } from "react-redux";
 import { useProducts } from "../services/useProducts";
+import Spinner from "../components/Spinner";
 const brandName = "samei";
 
 function Cart() {
@@ -18,6 +19,7 @@ function Cart() {
   const [orders, setOrders] = useState([]);
   const { products } = useProducts();
   const orderList = useSelector((state) => state.app.orderList);
+  const orderedCategories = orders?.map((order) => order.category);
 
   useEffect(() => {
     async function getOrders() {
@@ -36,6 +38,14 @@ function Cart() {
     getOrders();
   }, [orderList]);
 
+  if (!products || products.length === 0) return <Spinner />;
+  const productMatchWithOrder = orderedCategories
+    ?.map((category) =>
+      products?.filter((product) => product.category === category)
+    )
+    ?.map((products) => {
+      return products?.slice(0, 12);
+    });
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectItems([]);
@@ -101,14 +111,21 @@ function Cart() {
               <p className="md:h-8 font-bold text-2xl md:mt-5 md:mb-4 md:pl-8 underline">
                 Explore more of {brandName}'s
               </p>
-              <div className="flex gap-3 flex-wrap md:ml-7 md:m-auto">
-                {products?.slice(0, 4).map((product) => (
-                  <ProductList product={product} key={product.id} />
-                ))}
+              <div className="flex gap-4 flex-wrap md:ml-7 ">
+                {productMatchWithOrder.length > 0
+                  ? productMatchWithOrder?.map((products) => {
+                      return products?.map((product) => (
+                        <ProductList product={product} key={product.id} />
+                      ));
+                    })
+                  : products?.map((product) => {
+                      console.log(product);
+                      return <ProductList product={product} key={product.id} />;
+                    })}
               </div>
             </div>
           </div>
-          <div className="md:w-[25%] pb-5 md:pr-3">
+          <div className="md:w-[25%] pb-5 ">
             <PaymentSummary orders={orders} />
           </div>
         </div>

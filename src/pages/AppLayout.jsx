@@ -9,7 +9,7 @@ function AppLayout() {
   const orderList = useSelector((state) => state.app.orderList);
   return (
     <div className="flex">
-      <div className={orderList.length > 0 ? "w-[88%]" : ""}>
+      <div className={orderList.length > 0 ? "w-[86%]" : ""}>
         <Header />
         <main className="w-[100%]">
           <Outlet />
