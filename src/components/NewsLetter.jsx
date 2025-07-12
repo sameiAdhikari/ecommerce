@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { insertNewsletter } from "../lib/dataService";
 import { RiSpam2Fill } from "react-icons/ri";
 import { useRef } from "react";
+import { toast } from "react-toastify";
 
 function NewsLetter() {
   const emailRef = useRef();
@@ -13,6 +14,7 @@ function NewsLetter() {
     }
     await insertNewsletter(data);
     setValue("email", "");
+    toast.success("successsfully subscribe");
   };
   return (
     <section className="bg-gray-400">

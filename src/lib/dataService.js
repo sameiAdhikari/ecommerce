@@ -129,6 +129,7 @@ export async function signInWithGoogle() {
       queryParams: {
         prompt: "select_account",
       },
+      redirectTo: import.meta.env.VITE_REACT_APP_REDIRECT_URL_LOCAL,
     },
   });
   if (error) throw new Error(error.message);
