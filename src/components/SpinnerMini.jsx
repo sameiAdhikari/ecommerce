@@ -1,7 +1,7 @@
 function SpinnerMini() {
   return (
     <div className="flex items-center justify-center ">
-      <div className="w-12 h-12 border-5  border-gray-300 border-t-gray-600 rounded-full  animate-spin"></div>
+      <div className="w-6 h-6 border-5  border-gray-300 border-t-gray-600 rounded-full  animate-spin"></div>
     </div>
   );
 }

@@ -12,7 +12,10 @@ function ProductList({ product }) {
 
   return (
     <div className="bg-white p-2 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 md:w-[32%] w-full border border-gray-400 cursor-pointer">
-      <div className="aspect-[4/3] overflow-hidden rounded-xl">
+      <div
+        className="aspect-[4/3] overflow-hidden rounded-xl"
+        onClick={() => handleClick(product?.id)}
+      >
         <img
           src={
             Array.isArray(product?.images)

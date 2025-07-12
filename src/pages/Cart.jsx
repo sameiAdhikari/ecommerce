@@ -8,18 +8,26 @@ import Sorting from "../components/Sorting";
 import ProductList from "../components/ProductList";
 import OrderList from "../components/OrderList";
 import supabase from "../lib/supabase";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useProducts } from "../services/useProducts";
 import Spinner from "../components/Spinner";
+import { useSearchParams } from "react-router";
+import { updateSelectAll, updateSelectItems } from "../reduxSlicers/appSlicers";
 const brandName = "samei";
 
 function Cart() {
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectItems, setSelectItems] = useState([]);
+  const dispatch = useDispatch();
+  // const [selectItems, setSelectItems] = useState([]);
   const [orders, setOrders] = useState([]);
   const { products } = useProducts();
   const orderList = useSelector((state) => state.app.orderList);
+  const selectAll = useSelector((state) => state.app.selectAll);
+  const selectItems = useSelector((state) => state.app.selectItems);
   const orderedCategories = orders?.map((order) => order.category);
+  const [searchParams] = useSearchParams();
+  const sortBy = searchParams.get("sortBy") || "all";
+  let filteredOrders;
+  let finalProducts;
 
   useEffect(() => {
     async function getOrders() {
@@ -39,21 +47,36 @@ function Cart() {
   }, [orderList]);
 
   if (!products || products.length === 0) return <Spinner />;
-  const productMatchWithOrder = orderedCategories
+  if (sortBy === "deals") {
+    filteredOrders = orders.filter((order) => order.discount > 0);
+  } else {
+    filteredOrders = orders;
+  }
+
+  // Filter products based on the ordered categories to show related products
+  const productMatchWithOrder = [...new Set(orderedCategories)]
     ?.map((category) =>
       products?.filter((product) => product.category === category)
     )
     ?.map((products) => {
       return products?.slice(0, 12);
     });
+
+  if (selectItems?.length > 0) {
+    finalProducts = filteredOrders?.filter((product) => {
+      return selectItems.includes(product.id);
+    });
+  }
+  // console.log(finalProducts);
   const handleSelectAll = () => {
+    if (orderList.length === 0) return;
     if (selectAll) {
-      setSelectItems([]);
+      dispatch(updateSelectItems([]));
     } else {
       const allIds = orders.map((order) => order.id);
-      setSelectItems(allIds);
+      dispatch(updateSelectItems(allIds));
     }
-    setSelectAll(!selectAll);
+    dispatch(updateSelectAll(!selectAll));
   };
 
   return (
@@ -91,15 +114,12 @@ function Cart() {
               <Sorting />
             </div>
             <div className="pb-5">
-              {orders.length > 0 ? (
-                orders.map((order) => (
+              {filteredOrders.length > 0 ? (
+                filteredOrders.map((order) => (
                   <OrderList
                     key={order.id}
                     order={order}
-                    selectItems={selectItems}
-                    setSelectItems={setSelectItems}
-                    setSelectAll={setSelectAll}
-                    selectAll={setSelectAll}
+                    filteredOrders={filteredOrders}
                   />
                 ))
               ) : (
@@ -119,14 +139,13 @@ function Cart() {
                       ));
                     })
                   : products?.map((product) => {
-                      console.log(product);
                       return <ProductList product={product} key={product.id} />;
                     })}
               </div>
             </div>
           </div>
           <div className="md:w-[25%] pb-5 ">
-            <PaymentSummary orders={orders} />
+            <PaymentSummary orders={finalProducts} />
           </div>
         </div>
       </div>

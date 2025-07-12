@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import { AiOutlineSafety } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
 import { FaChevronRight, FaShippingFast } from "react-icons/fa";
+import { AiOutlineSafety } from "react-icons/ai";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { TbTruckReturn } from "react-icons/tb";
 import { TiArrowRightThick } from "react-icons/ti";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 
+import { updateOrderList, updateSelectItems } from "../reduxSlicers/appSlicers";
+import { useRespectiveProduct } from "../services/useProducts";
+import Star from "./Star";
 import {
   delivaryTime,
   formatedSoldNumber,
   formatPrice,
 } from "../helper/helper";
-import { updateOrderList, updateSelectItems } from "../reduxSlicers/appSlicers";
-import { useRespectiveProduct } from "../services/useProducts";
-import Star from "./Star";
-import Spinner from "./Spinner";
 
 function ElectronicPageDetails() {
   const { productId } = useParams();
@@ -25,8 +24,8 @@ function ElectronicPageDetails() {
   const [quantity, setQuantity] = useState(1);
   const [defaultCountry, setDefaultCountry] = useState("");
   const [imagePosition, setImagePosition] = useState(0);
+  const { product } = useRespectiveProduct(productId);
   const selectItems = useSelector((state) => state.app.selectItems);
-  const { product, isLoading } = useRespectiveProduct(productId);
   const localStorageOrderList =
     JSON.parse(localStorage.getItem("orderList")) || [];
 
@@ -43,10 +42,7 @@ function ElectronicPageDetails() {
         console.log(err.message);
       }
     );
-    localStorage.setItem("recentView", JSON.stringify(product));
-    window.scrollTo(0, 0);
-  }, [product]);
-  if (isLoading) return <Spinner />;
+  }, []);
 
   const handleAddToCart = (productId) => {
     dispatch(updateOrderList({ productId, quantity }));
@@ -57,18 +53,19 @@ function ElectronicPageDetails() {
       (item) => item.productId === productId
     );
     if (existingProductIndex !== -1) {
+      console.log(quantity);
       localStorageOrderList[existingProductIndex].quantity = quantity;
     } else {
       localStorageOrderList.push({ productId, quantity });
     }
     localStorage.setItem("orderList", JSON.stringify(localStorageOrderList));
-    navigate(-1);
+    navigate("/products");
   };
   const handleImageChange = (e) => {
     setImagePosition(e.target.dataset.id);
   };
   return (
-    <div className="md:mt-25 h-auto flex  md:px-10 md:py-7 ">
+    <div className="md:mt-25 h-auto flex  md:px-10 md:py-10 ">
       <div className="w-[50%] ">
         <div className="mt-3">
           <div className="flex gap-3 ">
@@ -76,14 +73,13 @@ function ElectronicPageDetails() {
               {product?.images.map((image, i) => (
                 <img
                   src={image}
-                  key={i}
+                  key={image}
                   data-id={i}
-                  className="w-[5rem] h-[6rem] cursor-pointer object-contain rounded p-1"
+                  className="w-[5rem] h-[6rem] cursor-pointer rounded"
                   style={{
                     border: imagePosition == i ? "2px solid #4f46e5" : "",
                   }}
-                  // onClick={(e) => handleImageChange(e)}
-                  onMouseEnter={(e) => handleImageChange(e)}
+                  onClick={(e) => handleImageChange(e)}
                 />
               ))}
             </div>
@@ -91,7 +87,7 @@ function ElectronicPageDetails() {
             <img
               src={product?.images[imagePosition]}
               alt={product?.name}
-              className={`md:w-[80%] md:h-[95vh] object-cover transition-filter duration-500 ${
+              className={`md:w-[80%] md:h-[80vh] object-cover transition-filter duration-500 ${
                 isImageLoaded ? "" : "blur-md"
               }`}
               onLoad={() => setIsImageLoaded(true)}
@@ -104,7 +100,7 @@ function ElectronicPageDetails() {
           <div className="text-[1.4rem]">{product?.descriptions}</div>
           <div className="md:flex gap-2">
             <p className="text-gray-700">
-              {product?.sold ? formatedSoldNumber(product?.sold) : 0} Sold |
+              {formatedSoldNumber(product?.sold)} Sold |
             </p>
             <p className="cursor-pointer capitalize">
               sold by{" "}
@@ -120,7 +116,7 @@ function ElectronicPageDetails() {
           <div className=" flex gap-3">
             <Star rating={product?.ratings} size="1.8rem" />
             <span className="md:pr-2 md:text-[1.2rem] text-gray-700">
-              {product?.reviews ? product.reviews : 0} Reviews
+              {product?.reviews} Reviews
             </span>
           </div>
           <div className="relative md:w-20 md:mt-2 ">
@@ -144,8 +140,8 @@ function ElectronicPageDetails() {
               ))}
             </select>
           </div>
-          <div className="border-b border-gray-600 mt-2 md:pb-5">
-            <div className="flex gap-2 items-end ">
+          <div className="flex gap-2 items-end border-b border-gray-600 mt-2 md:pb-5">
+            {
               <p className="text-3xl font-bold text-green-600 tracking-tight">
                 {formatPrice(
                   product?.discount
@@ -153,23 +149,11 @@ function ElectronicPageDetails() {
                     : product?.price
                 )}
               </p>
-
-              <p className="line-through text-gray-500 text-lg">
-                {formatPrice(product?.price)}
-              </p>
-            </div>
-            <div className=" text-2xl ">
-              <p>
-                <span className="font-bold">Subtotal :</span>{" "}
-                {formatPrice(
-                  (product?.discount
-                    ? product?.price - product?.discount
-                    : product?.price) * quantity
-                )}
-              </p>
-            </div>
+            }
+            <p className="line-through text-gray-500 text-lg">
+              {formatPrice(product?.price)}
+            </p>
           </div>
-
           {product?.specification &&
             Object.entries(product?.specification).map(([key, value]) => {
               return (

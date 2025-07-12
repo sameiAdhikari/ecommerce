@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 
 function Sorting() {
+  const [searchParam, setSearchParam] = useSearchParams();
   const [active, setActive] = useState(true);
   function handleActive(type) {
     if ((type === "all" && !active) || (type === "deals" && active)) {
       setActive(!active);
     }
+    searchParam.set("sortBy", type);
+    setSearchParam(searchParam);
   }
   return (
     <div>

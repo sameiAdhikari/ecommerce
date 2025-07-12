@@ -1,44 +1,74 @@
 import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineDelete, MdRadioButtonUnchecked } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import { deleteOrderList, updateOrderList } from "../reduxSlicers/appSlicers";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteOrderList,
+  updateOrderList,
+  updateSelectAll,
+  updateSelectItems,
+} from "../reduxSlicers/appSlicers";
 
 // import { useDispatch, useSelector } from "react-redux";
 
-function OrderList({ order, selectItems, setSelectItems, setSelectAll }) {
+function OrderList({ order, filteredOrders }) {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(order.quantity || 1);
+  const selectItems = useSelector((state) => state.app.selectItems || []);
+  const localStorageOrderList =
+    JSON.parse(localStorage.getItem("orderList")) || [];
+
   const increase = () => {
     if (quantity > order.stock) return;
     const newQuantity = quantity + 1;
     setQuantity(newQuantity);
     dispatch(updateOrderList({ productId: order.id, quantity: newQuantity }));
+    // Update local storage
+    const updatedLocalStorage = localStorageOrderList.findIndex(
+      (item) => item.productId === order.id
+    );
+    if (updatedLocalStorage !== -1) {
+      localStorageOrderList[updatedLocalStorage].quantity = newQuantity;
+      localStorage.setItem("orderList", JSON.stringify(localStorageOrderList));
+    }
   };
   const decrease = () => {
     if (quantity <= 1) return;
     const newQuantity = quantity - 1;
     setQuantity(newQuantity);
     dispatch(updateOrderList({ productId: order.id, quantity: newQuantity }));
+    const updatedLocalStorage = localStorageOrderList.findIndex(
+      (item) => item.productId === order.id
+    );
+    if (updatedLocalStorage !== -1) {
+      localStorageOrderList[updatedLocalStorage].quantity = newQuantity;
+      localStorage.setItem("orderList", JSON.stringify(localStorageOrderList));
+    }
   };
 
   const handleSelectItems = (id) => {
     if (selectItems.includes(id)) {
-      setSelectItems(selectItems.filter((id) => order.id !== id));
-      setSelectAll(false);
+      dispatch(updateSelectItems(selectItems.filter((id) => order.id !== id)));
+      dispatch(updateSelectAll(false));
     } else {
-      const updatedOrder = [...selectItems, id];
-      setSelectItems(updatedOrder);
-      // setSelectAll(orders.length === updatedOrder.length);
+      dispatch(updateSelectItems([...selectItems, id]));
+      if (selectItems.length + 1 === filteredOrders.length) {
+        dispatch(updateSelectAll(true));
+      }
     }
   };
 
   // need to delete order from the order list with order id
   const deleteOrder = (id) => {
     dispatch(deleteOrderList(id));
+
+    const updatedOrderList = localStorageOrderList.filter((order) => {
+      return order.productId !== id;
+    });
+    localStorage.setItem("orderList", JSON.stringify(updatedOrderList));
   };
   return (
-    <div className=" capitalize grid grid-cols-[3rem_20%_30%_1fr_1fr_1fr_4rem] md:h-[8rem] gap-3 items-center md:my-2 font-semibold text-stone-900 border-b border-gray-500 bg-gray-100">
+    <div className=" capitalize grid grid-cols-[3rem_20%_30%_1fr_1fr_1fr_4rem] md:h-[8.5rem] gap-3 items-center md:my-2 font-semibold text-stone-900 border-b border-gray-500 bg-gray-100 ">
       <div
         className="flex items-center justify-end"
         onClick={() => handleSelectItems(order.id)}
@@ -53,7 +83,7 @@ function OrderList({ order, selectItems, setSelectItems, setSelectAll }) {
         <img
           src={order.images[0]}
           alt={order.images[0]}
-          className="md:w-full md:h-[8rem] object-cover"
+          className="md:w-full md:h-[8rem] object-cover py-1"
         />
       </div>
       <div>

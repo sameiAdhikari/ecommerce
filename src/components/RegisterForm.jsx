@@ -1,17 +1,26 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
-const fullNamePattern = /^[A-Za-z\s'_]+$/;
+import { useSignIn, useSignInWith } from "../services/useProducts";
+import SpinnerMini from "./SpinnerMini";
 
 function RegisterForm() {
+  const { signInUser, isLoading } = useSignIn();
+  const { handleLogIn } = useSignInWith();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors },
   } = useForm();
 
-  function submitForm(data) {
-    console.log(data);
+  async function submitForm(data) {
+    signInUser(data);
+    reset();
   }
+
+  const handelSignIn = () => {
+    handleLogIn();
+  };
   return (
     <form
       onSubmit={handleSubmit(submitForm)}
@@ -26,16 +35,14 @@ function RegisterForm() {
           placeholder="your name"
           id="fullName"
           name="fullName"
-          className="border border-gray-300 md:px-3 md:py-2 rounded-md bg-black/30  text-stone-100 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+          className=" md:px-3 md:py-2 rounded-md bg-stone-100  text-stone-900 focus:outline-none focus:border focus:border-stone--900 transition-colors duration-200"
+          // className="border-2 border-stone-900 md:px-3 md:py-2 rounded-md bg-black/50  text-stone-100 focus:outline-none capitalize focus:border-blue-500 transition-colors duration-200"
           {...register("fullName", {
             required: "fullName is required",
-            validate: (value) =>
-              fullNamePattern.test(value) ||
-              "Full name can only contain letters and hyphens",
-            // pattern: {
-            //   value: /^[A-Za-z\s'_]+$/,
-            //   message: "fullname contains only letters",
-            // },
+            pattern: {
+              value: /^[A-Za-z\s'_]+$/,
+              message: "full name should contain only letters and hyphens",
+            },
           })}
         />
         <div className=" text-end">
@@ -55,7 +62,8 @@ function RegisterForm() {
           id="email"
           name="email"
           placeholder="email address"
-          className="border border-gray-300 md:px-3 md:py-2 rounded-md bg-black/30  text-stone-100 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+          className=" md:px-3 md:py-2 rounded-md bg-stone-100  text-stone-900 focus:outline-none focus:border focus:border-stone--900 transition-colors duration-200"
+          // className="border-2 border-stone-900 md:px-3 md:py-2 rounded-md bg-black/50  text-stone-100 focus:outline-none focus:border-blue-500 transition-colors duration-200"
           {...register("email", {
             required: "email address required",
             pattern: {
@@ -83,7 +91,8 @@ function RegisterForm() {
           placeholder="password"
           id="password"
           name="password"
-          className="border border-gray-300 md:px-3 md:py-2 rounded-md bg-black/30  text-stone-100 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+          className=" md:px-3 md:py-2 rounded-md bg-stone-100  text-stone-900 focus:outline-none focus:border focus:border-stone--900 transition-colors duration-200"
+          // className="border-2 border-stone-900 md:px-3 md:py-2 rounded-md bg-black/50  text-stone-100 focus:outline-none focus:border-blue-500 transition-colors duration-200"
           {...register("password", {
             required: "Password is required",
           })}
@@ -102,11 +111,14 @@ function RegisterForm() {
           type="submit"
           className="md:w-[100%] bg-blue-600 hover:bg-blue-500 text-white float-end font-semibold py-2 px-4 rounded-md transition-colors duration-200 cursor-pointer  md:text-xl"
         >
-          {isSubmitting ? "Submitting..." : "Submit"}
+          {isLoading ? <SpinnerMini /> : "Submit"}
         </button>
       </div>
 
-      <div className="md:w-full flex justify-center items-center md:bg-stone-100 hover:md:bg-stone-400 text-stone-900 text-xl md:p-1.5 md:rounded-[20px] md:mt-2 cursor-pointer transition-colors duration-200">
+      <div
+        className="md:w-full flex justify-center items-center border md:bg-stone-100 hover:md:bg-stone-300 text-stone-900 text-xl md:p-1.5 md:rounded-[20px] md:mt-2 cursor-pointer transition-colors duration-200"
+        onClick={handelSignIn}
+      >
         <img
           width="22"
           height="22"

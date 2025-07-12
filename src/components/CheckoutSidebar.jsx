@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 // import supabase from "../lib/supabase";
 import { TiTick } from "react-icons/ti";
@@ -7,12 +7,21 @@ import { MdAddShoppingCart } from "react-icons/md";
 
 import supabase from "../lib/supabase";
 import { useEffect, useState } from "react";
+import { minimumPrice, VAT } from "../constant/constants"; // Import the minimum price constant
+import { formatPrice } from "../helper/helper";
+import {
+  updateFinalOrders,
+  updateTotalAmountAfterDiscountAndTax,
+} from "../reduxSlicers/appSlicers";
 
 function CheckoutSidebar() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const orderList = useSelector((state) => state.app.orderList);
   const isCartPage = useSelector((state) => state.app.isCartPage);
+  const user_id = useSelector((state) => state.app.user_id);
+  const [isMinimumPrice, setIsMinimumPrice] = useState(false);
   useEffect(() => {
     async function getOrderList() {
       try {
@@ -40,6 +49,15 @@ function CheckoutSidebar() {
     getOrderList();
   }, [orderList]);
 
+  const supTotal = orders
+    ?.map((order) => order.price * order.quantity)
+    .reduce((acc, price) => acc + price, 0);
+  const totalDiscount = orders
+    ?.map((order) => order.discount * order.quantity)
+    .reduce((acc, price) => acc + price, 0);
+
+  const estimatedTax = ((supTotal - totalDiscount) * VAT) / 100;
+  const finalPrice = supTotal - totalDiscount + estimatedTax;
   const totalPrice = orders.reduce((acc, el) => {
     if (el.discount) {
       const newPrice = (el.price - el.discount) * el.quantity;
@@ -49,6 +67,19 @@ function CheckoutSidebar() {
       return acc + newPrice;
     }
   }, 0);
+  const handleCheckout = () => {
+    if (totalPrice >= minimumPrice) {
+      navigate("/checkout");
+      setIsMinimumPrice(false);
+      dispatch(updateFinalOrders(orders));
+      dispatch(updateTotalAmountAfterDiscountAndTax(finalPrice));
+    } else {
+      setIsMinimumPrice(true);
+    }
+  };
+  const handleGoToCart = () => {
+    navigate("/cart");
+  };
 
   return (
     <div
@@ -59,26 +90,37 @@ function CheckoutSidebar() {
         <span>SubTotals</span>
         <MdAddShoppingCart className="text-2xl" />
       </p>
-      <p className="font-semibold text-2xl">${(totalPrice || 0).toFixed(2)}</p>
+      <p className="font-semibold text-2xl">{formatPrice(totalPrice)}</p>
       <p className="flex items-center py-3 px-1 text-[14px] bg-pink-200 rounded mt-2">
         {" "}
         <TiTick className="text-xl text-green-500" />
         <span>Free shipping</span>
       </p>
-      <button
-        className=" mt-3 float-left py-2 px-6 rounded-full cursor-pointer capitalize text-[1rem] text-stone-50 bg-amber-500 hover:bg-amber-300 hover:text-stone-900"
-        onClick={() => {
-          return navigate("/checkout");
-        }}
-      >
-        {/* orderList to be replace with orders */}
-        checkout ({orderList.length})
-      </button>
+      {isMinimumPrice && (
+        <p className="mt-2 text-[0.8rem] text-red-500 font-semibold">
+          Minimum order value {formatPrice(minimumPrice)} is required for
+          checkout.
+        </p>
+      )}
+      {user_id ? (
+        <button
+          className=" mt-3 float-left py-2 px-6 rounded-full cursor-pointer capitalize text-[1rem] text-stone-50 bg-amber-500 hover:bg-amber-300 hover:text-stone-900"
+          onClick={handleCheckout}
+        >
+          {/* orderList to be replace with orders */}
+          checkout ({orderList.length})
+        </button>
+      ) : (
+        <button
+          className=" mt-3 float-left py-2 px-6 rounded-full cursor-pointer capitalize text-[0.85rem] text-stone-50 bg-green-400 hover:bg-green-300 hover:text-stone-900"
+          onClick={() => navigate("/account")}
+        >
+          login to checkout
+        </button>
+      )}
       <button
         className=" mt-3 float-left py-2 px-6 rounded-full cursor-pointer capitalize text-[1rem] text-stone-900 border border-stone-900 hover:bg-stone-100 transition-all duration-200"
-        onClick={() => {
-          navigate("/cart");
-        }}
+        onClick={handleGoToCart}
       >
         go to bucket
       </button>

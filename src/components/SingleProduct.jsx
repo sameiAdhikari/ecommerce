@@ -4,23 +4,35 @@ import Star from "./Star";
 import { addDays, format } from "date-fns";
 // import { useNavigate } from "react-router";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function SingleProduct({ product }) {
-  // const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const description = product?.short_description.trim();
+  const [isHover, setIshover] = useState(false);
   const today = new Date();
   const handleNavigate = (productId) => {
     navigate(`/products/${productId}`);
   };
+  const handleMouseEnter = () => {
+    setIshover((c) => !c);
+  };
+  const handleMouseLeave = () => {
+    setIshover((c) => !c);
+  };
 
   return (
-    <div className="md:p-3   md:pb-6 cursor-pointer  rounded-lg md:m-3 md:mt-3 md:w-[31%]  mx-auto border border-gray-200  hover:shadow-2xl transition-shadow">
-      <div onClick={() => handleNavigate(product?.id)}>
+    <div
+      className="md:p-2   md:pb-6 cursor-pointer  rounded-lg md:m-3 md:mt-3 md:w-[31%]  mx-auto border border-gray-400  hover:shadow-2xl hover:shadow-indigo-600 transition-shadow"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="w-full h-60" onClick={() => handleNavigate(product?.id)}>
         <img
           src={product?.images?.[0]}
           alt="Saree"
-          className="w-full h-60 object-cover rounded-lg"
+          className="w-full h-full object-cover rounded-lg   transition-all duration-300"
+          style={{ scale: isHover ? "105%" : "" }}
         />
       </div>
 
@@ -83,41 +95,23 @@ function SingleProduct({ product }) {
           </p>
           <button
             onClick={() => handleNavigate(product?.id)}
-            className="mt-4 px-6 py-2 bg-indigo-500 text-white rounded-md md:cursor-pointer hover:bg-indigo-600 transition"
+            className="mt-4 px-6 py-2 bg-indigo-900 text-white rounded-md md:cursor-pointer hover:bg-stone-800 transition"
           >
             Buy Now
           </button>
         </div>
         <div className="md:flex md:mt-2">
-          {
-            product.fastestDelivary && (
-              <div>
-                Fastest Delivary
-                <strong className="md:ml-2">
-                  {format(
-                    addDays(
-                      today,
-                      product?.fastestDelivary
-                    ).toLocaleDateString(),
-                    "dd/MM/yyyy"
-                  )}
-                </strong>
-              </div>
-            )
-            //  :
-            //   <p>we are commited to fastest </p>
-          }
-          {/* {product.lateDelivary && (
+          {product.fastestDelivary && (
             <div>
-              Late Delivary
-              <strong>
+              Fastest Delivary
+              <strong className="md:ml-2">
                 {format(
-                  addDays(new Date(), 15).toLocaleDateString(),
+                  addDays(today, product?.fastestDelivary).toLocaleDateString(),
                   "dd/MM/yyyy"
                 )}
               </strong>
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </div>

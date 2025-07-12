@@ -10,31 +10,19 @@ import List from "./List";
 
 function Footer() {
   const sponsors = [
-    { name: "Sponsor One", logo: "/paypal.webp", link: "#" },
-    { name: "Sponsor Two", logo: "/coke.png", link: "#" },
-    { name: "Sponsor Three", logo: "/waiwai.png", link: "#" },
-    { name: "Sponsor Four", logo: "/facebook.webp", link: "#" },
+    { name: "Sponsor One", logo: "/paypal-3.svg", link: "#" },
+    { name: "Sponsor Two", logo: "/coca-cola-2021.svg", link: "#" },
+    { name: "Sponsor Three", logo: "/tesla-pure.svg", link: "#" },
+    { name: "Sponsor Four", logo: "/facebook.svg", link: "#" },
   ];
   return (
     <>
-      {/* <div className="md:py-[4rem]">
-        <p className="text-center text-[1.3rem] md:pb-5 ">
-          Supported by the worldwide company
-        </p>
-        <div className="w-full flex justify-center">
-          <img src="/paypal.webp" className="w-[200px] h-[110px] mx-3" />
-          <img src="/coke.png" className="w-[200px] h-[110px] mx-3" />
-          <img src="/waiwai.png" className="w-[200px] h-[110px] mx-3" />
-          <img src="/youtube.webp" className="w-[200px] h-[110px] mx-3" />
-          <img src="/facebook.webp" className="w-[200px] h-[110px] mx-3" />
-        </div>
-      </div> */}
-      <div className="w-full bg-gray-100 py-8 border-t border-gray-300">
+      <div className="w-full bg-gray-800 pt-2 pb-4 border-t">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+          <h2 className="text-xl font-semibold mb-5 text-stone-100">
             Supported by the worldwide Sponsors
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 items-center justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 items-center justify-center pb-3">
             {sponsors.map((sponsor, index) => (
               <a
                 key={index}
@@ -45,14 +33,14 @@ function Footer() {
                 <img
                   src={sponsor.logo}
                   alt={sponsor.name}
-                  className="h-16 mx-auto hover:scale-105 transition-transform"
+                  className="h-6 mx-auto transition-transform"
                 />
               </a>
             ))}
           </div>
         </div>
       </div>
-      <footer className="text-gray-400 bg-gray-800 pb-5 ">
+      <footer className="text-gray-400 bg-gray-900 pb-5 ">
         {/* <footer className="grid grid-cols-[1fr_1fr_1fr_1fr] w-full h-[15rem] bg-gray-700"> */}
         <div className="flex justify-between px-[8rem] align-middle w-full py-8  ">
           <div className="flex flex-col justify-between w-[29%]">
@@ -91,17 +79,25 @@ function Footer() {
           <div className="w-[10%] text-center">
             <h4 className="text-xl text-stone-50 font-medium">Useful Links</h4>
             <ul className="text-sm ">
-              <div className="my-1 text-[17px]">
-                <List linkTo="*">Coupons</List>
+              <div className="my-1 text-[17px] ">
+                <List linkTo="*" newWindow={true}>
+                  Coupons
+                </List>
               </div>
-              <div className="my-1 text-[17px]">
-                <List linkTo="*">Blog Post</List>
+              <div className="my-1 text-[17px] ">
+                <List linkTo="/blogpost" newWindow={true}>
+                  Blog Post
+                </List>
               </div>
-              <div className="my-1 text-[17px]">
-                <List linkTo="*">Return Policy</List>
+              <div className="my-1 text-[17px] ">
+                <List linkTo="/returnpolicy" newWindow={true}>
+                  Return Policy
+                </List>
               </div>
-              <div className="my-1 text-[17px]">
-                <List linkTo="*">Join Affiliate</List>
+              <div className="my-1 text-[17px] ">
+                <List linkTo="/joinaffiliate" newWindow={true}>
+                  Join Affiliate
+                </List>
               </div>
             </ul>
           </div>
@@ -109,23 +105,32 @@ function Footer() {
           <div className="w-[20%] text-center">
             <h4 className="text-xl font-medium text-stone-50">Follow Us</h4>
             <ul className="text-sm pl-20">
-              <List linkTo="*">
+              <List
+                linkTo="https://www.facebook.com/nishant.khadka.9237/"
+                newWindow={true}
+              >
                 <div className="flex align-middle py-1 text-[17px]">
                   <FaFacebook className="text-xl mr-2" />
                   Facebook
                 </div>
               </List>
-              <List linkTo="*">
+              <List linkTo="https://x.com/NishantKha52217" newWindow={true}>
                 <div className="flex  align-middle py-1 text-[17px]">
                   <FaTwitter className="text-xl mr-2" /> Twitter
                 </div>
               </List>
-              <List linkTo="*">
+              <List
+                linkTo="https://www.instagram.com/nishantkhadka111/"
+                newWindow={true}
+              >
                 <div className="flex  align-middle py-1 text-[17px]">
                   <FaInstagram className="text-xl mr-2" /> Instagram
                 </div>
               </List>
-              <List linkTo="*">
+              <List
+                linkTo="https://www.youtube.com/watch?v=2YqrkCI9_wM&list=RD2YqrkCI9_wM&start_radio=1"
+                newWindow={true}
+              >
                 <div className="flex  align-middle py-1 text-[17px]">
                   <FaYoutube className="text-xl mr-2" /> Youtube
                 </div>
@@ -134,7 +139,7 @@ function Footer() {
           </div>
         </div>
         {/* -------------------------------footer copyrites----------------------------------- */}
-        <p className="text-xl text-center text-gray-500 py-5">
+        <p className="text-xl text-center text-gray-500 pb-3">
           &copy; {new Date().getFullYear()} . All rights reserved.
         </p>
       </footer>

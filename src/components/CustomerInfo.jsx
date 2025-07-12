@@ -1,18 +1,48 @@
 import { useForm } from "react-hook-form";
-import { insertCustomerInfo } from "../lib/dataService";
-import { useDispatch } from "react-redux";
-import { updateCustomerId } from "../reduxSlicers/appSlicers";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateOrderId,
+  updateUserInformation,
+} from "../reduxSlicers/appSlicers";
+import { insertOrders } from "../lib/dataService";
+import { useEffect, useState } from "react";
+import { useCountry } from "../services/useProducts";
+import { Listbox } from "@headlessui/react";
 
 const CustomerInfo = ({ handleSteps }) => {
+  const { countries } = useCountry();
   const dispatch = useDispatch();
+  const user_id = useSelector((state) => state.app.user_id);
+  const [countryCode, setcountryCode] = useState();
+  const arrangeCountry = countries
+    ?.sort((a, b) => a.name.common.localeCompare(b.name.common))
+    .map((country) => country);
   const {
     handleSubmit,
     register,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (arrangeCountry?.length > 0 && !countryCode) {
+      const country = arrangeCountry?.[0];
+      const code = country?.idd?.root + country?.idd?.suffixes?.[0];
+      setcountryCode(code);
+    }
+  }, [arrangeCountry, countryCode]);
   const submitForm = async (data) => {
-    const customer = await insertCustomerInfo(data);
-    dispatch(updateCustomerId(customer[0].id));
+    const newData = {
+      user_id,
+      data: {
+        ...data,
+        contactNumber: countryCode + data.contactNumber,
+      },
+    };
+    dispatch(updateUserInformation(newData));
+    const orderInfo = await insertOrders(newData);
+    dispatch(updateOrderId(orderInfo.id));
     handleSteps();
   };
 
@@ -21,6 +51,7 @@ const CustomerInfo = ({ handleSteps }) => {
       onSubmit={handleSubmit(submitForm)}
       className=" md:w-[70%] md:m-auto md:border-t-1  md:border-gray-100 md:shadow-sm shadow-gray-600 md:mt-18 md:mb-8 md:p-4 flex flex-col gap-4"
     >
+      <Listbox></Listbox>
       <div className="flex justify-between">
         <div className="md:w-[32%]">
           <label className="font-semibold">First Name</label>
@@ -100,20 +131,44 @@ const CustomerInfo = ({ handleSteps }) => {
       </div>
       <div className="md:w-[100%]">
         <label className="font-semibold">Contact Number</label>
-        <input
-          type="text"
-          name="contactNumber"
-          id="contactNumber"
-          placeholder="Contact number"
-          className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
-          {...register("contactNumber", {
-            required: "contact number is required",
-            pattern: {
-              value: /^(\+)?([0-9]{1,3})?[0-9]{10}$/,
-              message: "Enter a valid 10-digit phone number",
-            },
-          })}
-        />
+        <div className="flex gap-3">
+          <select
+            value={countryCode}
+            onChange={(e) => setcountryCode(e.target.value)}
+            className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-[30%] rounded-md shadow-sm  outline-none"
+          >
+            {arrangeCountry?.map((country) => {
+              const ctCode = country.idd.root + country.idd.suffixes?.[0];
+              return (
+                <option
+                  value={ctCode}
+                  key={country.name.common}
+                >{`(${ctCode}) ${country.name.common}`}</option>
+              );
+            })}
+          </select>
+          <input
+            type="text"
+            name="contactNumber"
+            id="contactNumber"
+            value={watch("contactNumber") || ""}
+            placeholder="Contact number"
+            className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
+            {...register("contactNumber", {
+              required: "contact number is required",
+              onChange: (e) => {
+                let trimValue = e.target.value.replace(/\D/g, "");
+                // const trimedValue = trimValue.slice(0, 12);
+                // setValue("contactNumber", trimedValue);
+                if (trimValue.length > 12) {
+                  setValue("contactNumber", trimValue.slice(0, 12));
+                  return;
+                }
+                setValue("contactNumber", trimValue);
+              },
+            })}
+          />
+        </div>
         <p className="text-red-500 md:mt-1">{errors.contactNumber?.message}</p>
       </div>
       <div className="md:w-[100%]">

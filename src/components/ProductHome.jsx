@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
+import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router";
+import Spinner from "../components/Spinner";
+import { productPerPage } from "../constant/constants";
 import { useProducts } from "../services/useProducts";
 import ProductSidebar from "./ProductSidebar";
 import SingleProduct from "./SingleProduct";
-import { useSelector } from "react-redux";
-import Spinner from "../components/Spinner";
-
-const productPerPage = 20;
+// import { updateActiveTab } from "../reduxSlicers/appSlicers";
 
 function ProductHome() {
+  // const dispatch = useDispatch();
+  // const location = useLocation();
+  // const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [pageNumber, setPageNumber] = useState(1);
   const priceRange = useSelector((state) => state.app.priceRange);
@@ -21,16 +24,43 @@ function ProductHome() {
   const filter = searchParams.get("filter") || "all";
   const category = searchParams.get("category") || "all";
   const rating = Number(searchParams.get("rating")) || 0;
+  const subCategory = searchParams.get("sub_category") || "all";
 
   let categoryFilter;
   let filterWithPrice;
   let filterProduct;
-
+  let filterSubCategory;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // const navEntries = performance.getEntriesByType("navigation");
+    // console.log(navEntries?.[0].type);
+    // if (location.search) {
+    //   navigate("/products", { replace: true });
+    //   // dispatch(updateActiveTab(0));
+    // }
+    // eslint-disable-next-line
+  }, [search]);
   if (isLoading || !products || products.length === 0) return <Spinner />;
 
-  const searchProducts = products?.filter((product) =>
-    product.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const searchQuery = search
+    .toLowerCase()
+    .replace(/[^\w\s]/gi, "")
+    .split(/\s+/);
+  const searchProducts = products?.filter((product) => {
+    const productQuery = [
+      product.title,
+      product.brand,
+      product.descriptions,
+      product.sub_category,
+      product.category,
+    ]
+      .join(" ")
+      .toLowerCase()
+      .replace(/^\w\s/gi, "");
+    return searchQuery.some((query) => {
+      return productQuery.includes(query);
+    });
+  });
 
   if (category === "all") {
     categoryFilter = searchProducts;
@@ -40,12 +70,23 @@ function ProductHome() {
         product.category.split(" ").join("-") === category.split(" ").join("-")
     );
   }
-  if (!priceRange || !("min" in priceRange) || !("max" in priceRange)) {
-    filterWithPrice = categoryFilter;
-  } else if (priceRange.min === 2000 && priceRange.max === 3000) {
-    filterWithPrice = categoryFilter.filter((product) => product.price >= 2000);
+
+  if (subCategory === "all") {
+    filterSubCategory = categoryFilter;
   } else {
-    filterWithPrice = categoryFilter.filter(
+    filterSubCategory = categoryFilter.filter(
+      (product) => product.sub_category === subCategory
+    );
+  }
+
+  if (!priceRange || !("min" in priceRange) || !("max" in priceRange)) {
+    filterWithPrice = filterSubCategory;
+  } else if (priceRange.min === 2000 && priceRange.max === 3000) {
+    filterWithPrice = filterSubCategory.filter(
+      (product) => product.price >= 2000
+    );
+  } else {
+    filterWithPrice = filterSubCategory.filter(
       (product) =>
         product.price >= priceRange.min && product.price <= priceRange.max
     );
@@ -55,9 +96,13 @@ function ProductHome() {
   );
 
   if (filter === "high-low-price") {
-    filterProduct = [...productWithRating]?.sort((a, b) => b.price - a.price);
+    filterProduct = [...productWithRating]?.sort(
+      (a, b) => b.price - b.discount - (a.price - a.discount)
+    );
   } else if (filter === "low-high-price") {
-    filterProduct = [...productWithRating]?.sort((a, b) => a.price - b.price);
+    filterProduct = [...productWithRating]?.sort(
+      (a, b) => a.price - a.discount - (b.price - b.discount)
+    );
   } else if (filter === "discount") {
     filterProduct = [...productWithRating].filter(
       (product) => product.discount > 0
@@ -80,10 +125,12 @@ function ProductHome() {
   const handleIncreasePage = () => {
     if (totalPage <= 1) return;
     setPageNumber((page) => page + 1);
+    window.scrollTo(0, 0);
   };
   const handleDecreasePage = () => {
     if (pageNumber <= 1) return;
     setPageNumber((page) => page - 1);
+    window.scrollTo(0, 0);
   };
   const handleChange = (e) => {
     searchParams.set("filter", e.target.value);
@@ -92,7 +139,7 @@ function ProductHome() {
 
   return (
     <>
-      <div className="md:w-full md:h-auto md:mt-[7.6rem]  md:grid md:grid-cols-[15rem_1fr] ">
+      <div className="md:w-full md:h-auto md:mt-[7.6rem] pb-[1px] md:grid md:grid-cols-[15rem_1fr] ">
         <ProductSidebar />
         <div className="md:flex md:flex-wrap border  border-gray-400 md:p-3">
           <div className="md:w-full  md:h-10 md:flex md:items-center md:justify-between border-b md:pb-3 md:mr-7">
@@ -109,9 +156,11 @@ function ProductHome() {
               <option value="discount">Dicounted offers</option>
             </select>
           </div>
-          {itemsPerPage?.map((product) => (
-            <SingleProduct product={product} key={product.id} />
-          ))}
+          <Suspense fallback={<Spinner />}>
+            {itemsPerPage?.map((product) => (
+              <SingleProduct product={product} key={product.id} />
+            ))}
+          </Suspense>
           <div className="w-full h-auto">
             <div className="flex items-center justify-center">
               <button

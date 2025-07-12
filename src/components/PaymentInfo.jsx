@@ -1,10 +1,10 @@
 // import { useState } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { insertCardInfo } from "../lib/dataService";
 import { useDispatch, useSelector } from "react-redux";
-import { setSteps } from "../reduxSlicers/appSlicers";
+import { insertCardInfo } from "../lib/dataService";
+import { resetOrderList, setSteps } from "../reduxSlicers/appSlicers";
+import { useNavigate } from "react-router";
 const years = Array.from(
   { length: 10 },
   (_, i) => new Date().getFullYear() + i
@@ -26,7 +26,15 @@ const months = [
 
 function PaymentInfo({ handleSteps }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const steps = useSelector((state) => state.app.steps);
+  const order_id = useSelector((state) => state.app.order_id);
+  const coupon_code = useSelector((state) => state.app.promoCode);
+  const finalOrders = useSelector((state) => state.app.finalOrders);
+  const totalAmountAfterDiscountAndTax = useSelector(
+    (state) => state.app.totalAmountAfterDiscountAndTax
+  );
+  const cardInfo = JSON.parse(localStorage.getItem("cardInformation"));
   const [isSave, setIsSave] = useState(false);
   const {
     register,
@@ -36,13 +44,37 @@ function PaymentInfo({ handleSteps }) {
     formState: { errors },
   } = useForm();
 
+  const totalDiscount = finalOrders.reduce(
+    (acc, el) => acc + el.discount * el.quantity,
+    0
+  );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const submitForm = async (data) => {
+    // make a api call to complete a payment make sure it's asynchronus function so that it wait to proceed;
+    const PaymentVarification = true;
+    const newData = {
+      order_id,
+      coupon_code,
+      totalAmountAfterDiscountAndTax,
+      finalOrders,
+      totalDiscount,
+      data,
+      order_status: "confirmed",
+      payment_status: PaymentVarification ? "confirmed" : "pending",
+    };
+
+    await insertCardInfo(newData);
+    dispatch(resetOrderList());
+    localStorage.setItem("orderList", JSON.stringify([]));
+    dispatch(setSteps(1));
+    handleSteps();
     if (data.saveCardInfo) {
       localStorage.setItem("cardInformation", JSON.stringify(data));
     }
-    await insertCardInfo(data);
-    handleSteps();
-    toast.success("congratulations");
+    navigate("/cart");
   };
   const handlePrevious = () => {
     if (steps <= 1) return;
@@ -60,6 +92,7 @@ function PaymentInfo({ handleSteps }) {
           type="text"
           name="cardHolder"
           id="cardHolder"
+          defaultValue={cardInfo?.cardHolder}
           placeholder="name on card"
           className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
           {...register("cardHolder", {
@@ -71,7 +104,7 @@ function PaymentInfo({ handleSteps }) {
             },
           })}
         />
-        <p className="text-red-500 md:mt-1">{errors.cardHolder?.message}</p>
+        <p className="text-red-500 md:mt-1">{errors?.cardHolder?.message}</p>
       </div>
       <div className="md:w-[100%]">
         <label className="font-semibold">Card Number</label>
@@ -79,7 +112,9 @@ function PaymentInfo({ handleSteps }) {
           type="text"
           name="cardNumber"
           id="cardNumber"
-          value={watch("cardNumber") || ""}
+          defaultValue={
+            cardInfo ? cardInfo.cardNumber : watch("cardNumber") || ""
+          }
           placeholder="Card number"
           className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
           {...register("cardNumber", {
@@ -102,7 +137,11 @@ function PaymentInfo({ handleSteps }) {
         <div className="flex justify-between md:w-full">
           <div className="md:w-[32%]">
             <select
-              value={watch("expiryMonth") || "January"}
+              defaultValue={
+                cardInfo
+                  ? cardInfo?.expiryMonth
+                  : watch("expiryMonth") || "January"
+              }
               className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
               {...register("expiryMonth", {
                 onChange: (e) => setValue(e.target.value),
@@ -121,7 +160,11 @@ function PaymentInfo({ handleSteps }) {
           </div>
           <div className="md:w-[32%]">
             <select
-              value={watch("expiryYear") || new Date().getFullYear()}
+              defaultValue={
+                cardInfo
+                  ? cardInfo.expiryYear
+                  : watch("expiryYear") || new Date().getFullYear()
+              }
               className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
               {...register("expiryYear", {
                 onChange: (e) => setValue(e.target.value),
@@ -144,7 +187,7 @@ function PaymentInfo({ handleSteps }) {
               value={watch("cvc") || ""}
               className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
               {...register("cvc", {
-                required: "Card expiry month is required",
+                required: "Please provide a CVC number",
                 onChange: (e) => {
                   const clean = e.target.value.replace(/\D/g, "").trim();
                   const limit = clean.slice(0, 3);

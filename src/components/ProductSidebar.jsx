@@ -19,7 +19,6 @@ function ProductSidebar() {
       setSelectPriceIndex(index);
       dispatch(updatePriceRange(data));
     }
-    // setSelectPriceIndex(index);
   };
 
   const handleProductRating = (index) => {
@@ -30,7 +29,7 @@ function ProductSidebar() {
     }
 
     if (rating === 5 - index) {
-      searchParams.set("rating", 1);
+      searchParams.delete("rating");
       setSearchParams(searchParams);
     } else {
       searchParams.set("rating", 5 - index);

@@ -1,8 +1,17 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import SpinnerMini from "../components/SpinnerMini";
+import { updateLogin } from "../reduxSlicers/appSlicers";
+import { useSignInWith } from "../services/useProducts";
+import { signIn } from "../lib/dataService";
 
 function LoginForm() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { handleLogIn, isLoading } = useSignInWith();
   const [remember, setRemember] = useState(false);
   const {
     register,
@@ -11,21 +20,39 @@ function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  // Function to handle form submission
-  // need to implement actual login/register logic
-  function submitForm(data) {
-    if (remember === true) {
-      const credential = { email: data.email, password: data.password };
-      localStorage.setItem("loginCredentials", JSON.stringify(credential));
-    } else {
-      localStorage.removeItem("loginCredentials");
+  async function submitForm(data) {
+    try {
+      const token = await signIn(data);
+      if (remember === true) {
+        const credential = { email: data.email, password: data.password };
+        localStorage.setItem("loginCredentials", JSON.stringify(credential));
+      } else {
+        localStorage.removeItem("loginCredentials");
+      }
+      if (token.session.access_token) {
+        localStorage.setItem(
+          "authToken",
+          JSON.stringify(token.session.access_token)
+        );
+      }
+      if (!token) return;
+      reset();
+      navigate("/products");
+      toast.success("welcome to your online shopping store");
+      dispatch(updateLogin(true));
+    } catch (error) {
+      toast.error(error.message);
     }
-    reset();
   }
+
+  const handelSignIn = () => {
+    handleLogIn();
+  };
+
   return (
     <form
       onSubmit={handleSubmit(submitForm)}
-      className="flex flex-col gap-2 mt-5 md:min-w-[45%] md:max-w-[45%]"
+      className=" flex flex-col gap-2 mt-5 md:min-w-[45%] md:max-w-[45%] "
     >
       <div className="flex flex-col md:mb-[-20px] md:h-[6.2rem]">
         <label htmlFor="email" className=" font-semibold text-lg">
@@ -36,11 +63,12 @@ function LoginForm() {
           placeholder="Email"
           id="email"
           name="email"
-          className="border border-gray-300 md:px-3 md:py-2 rounded-md bg-black/30  text-stone-100 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+          className=" md:px-3 md:py-2 rounded-md bg-stone-100  text-stone-900 focus:outline-none focus:border focus:border-stone--900 transition-colors duration-200"
           {...register("email", {
             required: "Email is required",
-            validate: (value) =>
-              value === "example1@gmail.com" || "email does't match",
+            pattern: {
+              message: "enter valid email please",
+            },
           })}
         />
         <div className="text-end">
@@ -60,11 +88,13 @@ function LoginForm() {
           placeholder="password"
           id="password"
           name="password"
-          className="border border-gray-300 md:px-3 md:py-2 rounded-md bg-black/30  text-stone-100 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+          className=" md:px-3 md:py-2 rounded-md bg-stone-100  text-stone-900 focus:outline-none focus:border focus:border-stone--900 transition-colors duration-200"
+          // className="border-2 border-stone-900 md:px-3 md:py-2 rounded-md bg-black/50  text-stone-100 focus:outline-none focus:border-blue-500 transition-colors duration-200"
           {...register("password", {
             required: "Password is required",
-            validate: (value) =>
-              value === "password" || "password doesn't match",
+            pattern: {
+              message: "valid pattern is A-Za-z0-9@$!%*?&",
+            },
           })}
         />
         <div className="text-end">
@@ -88,8 +118,8 @@ function LoginForm() {
       </div>
       <div className="Md:w-full flex items-end justify-between md:mt-[5px]">
         <Link
-          to="*"
-          className="md:hover:text-indigo-100 md:text-md md:text-[17px] underline float-right"
+          to="/forgotPassword"
+          className="md:hover:text-indigo-100 md:text-md md:text-[17px] underline float-right cursor-pointer"
         >
           forgot your password?
         </Link>
@@ -100,14 +130,22 @@ function LoginForm() {
           {isSubmitting ? "Logging..." : "Login"}
         </button>
       </div>
-      <div className="md:w-full flex justify-center items-center md:bg-stone-100 hover:md:bg-stone-400 text-stone-900 text-xl md:p-1.5 md:rounded-[20px] md:mt-5 cursor-pointer transition-colors duration-200">
-        <img
-          width="22"
-          height="22"
-          src="https://img.icons8.com/color/48/google-logo.png"
-          alt="google-logo"
-        />
-        <Link className="md:ml-3">Log in with gmail</Link>
+      <div className="md:w-full flex justify-center items-center border md:bg-stone-100 hover:bg-stone-300 text-stone-900 text-xl md:p-1.5 md:rounded-[20px] md:mt-5 cursor-pointer transition-colors duration-200">
+        {isLoading ? (
+          <SpinnerMini />
+        ) : (
+          <>
+            <img
+              width="22"
+              height="22"
+              src="https://img.icons8.com/color/48/google-logo.png"
+              alt="google-logo"
+            />
+            <Link onClick={handelSignIn} className="md:ml-3">
+              Log in with gmail
+            </Link>
+          </>
+        )}
       </div>
     </form>
   );

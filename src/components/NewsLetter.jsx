@@ -1,16 +1,46 @@
+import { useForm } from "react-hook-form";
+import { insertNewsletter } from "../lib/dataService";
+import { RiSpam2Fill } from "react-icons/ri";
+import { useRef } from "react";
+
 function NewsLetter() {
+  const emailRef = useRef();
+  const { register, handleSubmit, setValue } = useForm();
+  const submitForm = async (data) => {
+    console.log(data.email);
+    if (!data?.email.trim()) {
+      emailRef.current?.focus();
+    }
+    await insertNewsletter(data);
+    setValue("email", "");
+  };
   return (
-    <section>
-      <div className="bg-gray-100 p-8 md:p-16 text-center">
+    <section className="bg-gray-400">
+      <div className="bg-stone-100 w-[94.5%] mx-auto flex flex-col justify-center items-center py-8 px-10 ">
         <h2 className="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
-        <p className="text-gray-600 mb-6">
-          Stay updated with our latest collections and exclusive offers.
+        <p className="text-stone-800 mb-6 w-[70%]">
+          Stay updated with our latest collections and exclusive offers.Be the
+          first to discover new arrivals across all categories — from fashion to
+          tech. Get insider access to limited-time deals, seasonal trends, and
+          handpicked recommendations. Join our community and shop smarter,
+          fresher, and faster — every time.
         </p>
-        <form className="flex justify-between mx-auto w-[40%]">
+        <form
+          className="flex justify-between  w-[60%]"
+          onSubmit={handleSubmit(submitForm)}
+        >
           <input
             type="email"
             placeholder="Enter your email"
-            className="px-4 py-2 border w-[80%] border-gray-300 bg-stone-50 rounded-md md:mr-5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="px-4 py-2 border w-[80%] border-gray-300 bg-stone-50 rounded-md  focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            {...register("email", {
+              pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            })}
+            ref={(e) => {
+              register("email").ref(e);
+              emailRef.current = e;
+            }}
+            // ref={emailRef}
           />
           <button
             type="submit"
@@ -19,8 +49,12 @@ function NewsLetter() {
             Subscribe
           </button>
         </form>
-        <p className="text-[17px] text-gray-600 md:mt-4">
-          Your email is safe with us, we don't spam
+        <p className="text-[17px] text-stone-800 md:mt-6 w-[100%] flex justify-center items-center">
+          Your email is safe with us, we don't{" "}
+          <span className="ml-2">
+            <RiSpam2Fill />
+          </span>{" "}
+          spam
         </p>
       </div>
     </section>

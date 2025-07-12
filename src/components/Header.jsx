@@ -3,78 +3,70 @@ import { FiSearch } from "react-icons/fi";
 import { TiShoppingCart, TiThMenu } from "react-icons/ti";
 import { VscAccount } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { updateSearch } from "../reduxSlicers/appSlicers";
 import List from "./List";
+// import supabase from "../lib/supabase";
+
+// const data = [
+// ];
 
 function Header() {
-  // const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const searchInputRef = useRef(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const orderList = useSelector((state) => state.app.orderList);
   const search = useSelector((state) => state.app.search);
+  const activeTab = Number(searchParams.get("activeTab")) || 0;
+  const browsingHistory =
+    JSON.parse(localStorage.getItem("browsingHistory")) || [];
 
-  const handleCategory = (category) => {
+  const handleCategory = (category, i) => {
     searchParams.set("category", category);
+    searchParams.set("activeTab", i);
     setSearchParams(searchParams);
     navigate({ pathname: "/products", search: searchParams.toString() });
     dispatch(updateSearch("")); // Clear search when changing category
     searchInputRef.current?.blur(); // Remove focus from search input
   };
 
-  const handleSearch = (value) => {
-    dispatch(updateSearch(value));
-    // navigate("/products");
+  const handleSearch = (e) => {
+    dispatch(updateSearch(e.target.value));
   };
   const handleNavigate = () => {
     if (search.trim() === "") {
       searchInputRef.current?.focus();
       return;
     }
+    if (browsingHistory.length > 0) {
+      const newHistory = [search, ...browsingHistory];
+      localStorage.setItem(
+        "browsingHistory",
+        JSON.stringify([...new Set(newHistory)])
+      );
+    } else {
+      localStorage.setItem("browsingHistory", JSON.stringify([search]));
+    }
     navigate("/products");
   };
 
   // const handleUpload = async () => {
   //   try {
-  //     const returnData = data.map(async (product) => {
-  //       // const newdata = {
-  //       //   title: product.title,
-  //       //   price: product.price,
-  //       //   rrp: product.rrp,
-  //       //   discount: product.discount,
-  //       //   voucher_discount: product.voucher_discount,
-  //       //   description: product.description,
-  //       //   short_description: product.short_description,
-  //       //   rating: product.rating,
-  //       //   reviews: product.reviews,
-  //       //   stock: product.stock,
-  //       //   sold: product.sold,
-  //       //   category: product.category,
-  //       //   brand: product.brand,
-  //       //   dealer: product.dealer,
-  //       //   limited_deal: product.limited_deal,
-  //       //   fastest_delivery: product.fastest_delivery,
-  //       //   late_delivery: product.late_delivery,
-  //       //   colors: product.colors,
-  //       //   input_voltage: product.input_voltage,
-  //       //   output_voltage: product.output_voltage,
-  //       //   plug_type: product.plug_type,
-  //       //   images: product.images,
-  //       //   additional_description: product.additional_description,
-  //       // };
-
-  //       const { data, error } = await supabase
-  //         .from("products")
-  //         .insert([product])
-  //         .select();
-  //       if (error) throw new Error("couldnot insert the data");
-  //       console.log(data);
-  //       return data;
-  //     });
-  //     const results = await Promise.all(returnData);
-  //     // console.log(results);
+  //     const returnData = await Promise.all(
+  //       data.map(async (product) => {
+  //         const { error } = await supabase.from("products").insert([product]);
+  //         if (error) throw new Error(error.message);
+  //         return data;
+  //       })
+  //     );
+  //     await Promise.all(returnData);
   //   } catch (err) {
   //     console.log(err);
   //   }
@@ -83,11 +75,11 @@ function Header() {
   return (
     <>
       <div
-        className={`fixed top-0 left-0 z-20 flex justify-between items-center px-[4rem] text-[var(--color-brand-500)] bg-gray-800 h-[5rem] shadow-xl/30 shadow-indigo-700 w-full`}
+        className={`fixed top-0 left-0 z-50 flex justify-between items-center px-[4rem] text-[var(--color-brand-500)] bg-gray-800 h-[5rem] shadow-xl/30 shadow-indigo-700 w-full`}
       >
         {/* <button
           className="fixed top-35 left-0 p-4 rounded-full bg-red-500 z-50 "
-          // onClick={handleUpload}
+          onClick={handleUpload}
         >
           upload
         </button> */}
@@ -107,9 +99,9 @@ function Header() {
             type="text"
             id="search"
             className={`md:w-full border border-gray-300 md:pb-[6px] md:pt-[5px] md:px-5 md:text-[1rem] text-black md:bg-stone-100 outline-none rounded-[5px]`}
-            placeholder="Search by name..."
+            placeholder="Search your best items..."
             value={search}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => handleSearch(e)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 handleNavigate();
@@ -122,9 +114,6 @@ function Header() {
           />
         </div>
         <ul className="flex justify-between items-center w-[25%] text-xl font-medium">
-          {/* <List linkTo="/" after="true">
-            Home
-          </List> */}
           <List linkTo="products" after="true">
             Products
           </List>
@@ -134,7 +123,6 @@ function Header() {
           <List linkTo="contact" after="true">
             Contact
           </List>
-          {/* <div className="flex justify-between w-[4.5rem]"> */}
           <Link
             to="cart"
             className="text-3xl hover:text-indigo-500 duration-300"
@@ -155,12 +143,16 @@ function Header() {
       <section>
         <div
           className={`fixed top-[5rem] left-0 z-99999 md:flex md:items-center ${
-            orderList.length > 0 ? "w-[86%]" : "w-full"
+            orderList.length > 0 && location.pathname === "/products"
+              ? "w-[86%]"
+              : "w-full"
           }  md:gap-6 capitalize  md:h-[2.7rem] bg-gray-700 md:text-stone-50 font-semibold`}
         >
           <button
-            className="flex items-center gap-1 font-semibold cursor-pointer md:border md:border-transparent hover:border-stone-100 md:py-[6px] md:px-3 rounded-[2px] md:ml-5"
-            onClick={() => handleCategory("all")}
+            className={`flex items-center gap-1 font-semibold cursor-pointer md:border ${
+              activeTab === 0 ? "border-stone-100" : "md:border-transparent"
+            } hover:border-stone-100 md:py-[6px] md:px-3 rounded-[2px] md:ml-5`}
+            onClick={() => handleCategory("all", 0)}
           >
             <TiThMenu className="md:text-2xl cursor-pointer" />
             <span> All</span>
@@ -181,11 +173,17 @@ function Header() {
 
               "shoes",
               "toys and games",
-            ].map((categoryList) => (
+            ].map((categoryList, i) => (
               <button
-                key={categoryList.categoryValue}
-                onClick={() => handleCategory(categoryList.categoryValue)}
-                className="md:border md:border-transparent hover:border-stone-100 md:py-[6px] md:px-3 rounded-[2px] capitalize cursor-pointer"
+                key={i + 50}
+                onClick={() =>
+                  handleCategory(categoryList.categoryValue, i + 1)
+                }
+                className={`md:border ${
+                  activeTab === i + 1
+                    ? "border-stone-100"
+                    : "border-transparent"
+                } hover:border-stone-100 md:py-[6px] md:px-3 rounded-[2px] capitalize cursor-pointer`}
               >
                 {categoryList.label}
               </button>
@@ -198,3 +196,30 @@ function Header() {
 }
 
 export default Header;
+
+// const newdata = {
+//   title,
+//   price,
+//   rrp,
+//   discount,
+//   descriptions,
+//   short_description,
+//   ratings,
+//   reviews,
+//   stock,
+//   sold,
+//   category,
+//   brand,
+//   dealer,
+//   fastest_delivery,
+//   late_delivery,
+//   colors,
+//   limited_deal,
+//   images,
+//   additional_description,
+//   sub_category,
+//   currency,
+//   tags,
+//   sizes,
+//   specification,
+// };

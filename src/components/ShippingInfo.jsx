@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { getCustomerInfo, insertShippingInfo } from "../lib/dataService";
 import { useDispatch, useSelector } from "react-redux";
-import { setSteps } from "../reduxSlicers/appSlicers";
+import { getOrdersByOrderId, insertShippingInfo } from "../lib/dataService";
+import {
+  setSteps,
+  updateShippingInformation,
+} from "../reduxSlicers/appSlicers";
 const shippingOptions = [
   { label: "Standard (5-7 days)", value: "standard" },
   { label: "Express (2-3 days)", value: "express" },
@@ -12,9 +15,9 @@ const shippingOptions = [
 const ShippingInfo = ({ handleSteps }) => {
   const dispatch = useDispatch();
   const [shippingType, setShippingType] = useState("standard");
-  const customerId = useSelector((state) => state.app.customerId);
   const steps = useSelector((state) => state.app.steps);
-  // console.log(steps);
+  const order_id = useSelector((state) => state.app.order_id);
+  const userInformation = useSelector((state) => state.app.userInformation);
 
   const {
     register,
@@ -22,33 +25,37 @@ const ShippingInfo = ({ handleSteps }) => {
     setValue,
     formState: { errors },
   } = useForm();
+
   useEffect(() => {
     async function getCustomer() {
-      const cust = await getCustomerInfo(customerId);
-      if (cust && cust[0]) {
-        setValue("firstName", cust[0].firstName || "");
-        setValue("middleName", cust[0].middleName || "");
-        setValue("lastName", cust[0].lastName || "");
-        setValue("emailAddress", cust[0].emailAddress || "");
-        setValue("contactNumber", cust[0].contactNumber || "");
-        setValue("addressLine1", cust[0].addressLine1 || "");
-        setValue("state", cust[0].state || "");
-        setValue("city", cust[0].city || "");
-        setValue("gender", cust[0].gender || "");
-        setValue("country", cust[0].country || "");
-        setValue("postalCode", cust[0].postalCode || "");
+      window.scrollTo(0, 0);
+      const user = await getOrdersByOrderId(order_id);
+      const userInformation = user[0].user_info;
+      if (userInformation) {
+        setValue("firstName", userInformation.firstName || "");
+        setValue("middleName", userInformation.middleName || "");
+        setValue("lastName", userInformation.lastName || "");
+        setValue("emailAddress", userInformation.emailAddress || "");
+        setValue("contactNumber", userInformation.contactNumber || "");
+        setValue("addressLine1", userInformation.addressLine1 || "");
+        setValue("state", userInformation.state || "");
+        setValue("city", userInformation.city || "");
+        setValue("gender", userInformation.gender || "");
+        setValue("country", userInformation.country || "");
+        setValue("postalCode", userInformation.postalCode || "");
       }
     }
 
     getCustomer();
-  }, [customerId, setValue]);
+  }, [userInformation, setValue, order_id]);
 
   const handlePrevious = () => {
     if (steps <= 1) return;
     dispatch(setSteps(steps - 1));
   };
   const submitForm = async (data) => {
-    await insertShippingInfo(data);
+    await insertShippingInfo({ order_id, data });
+    dispatch(updateShippingInformation(data));
     handleSteps();
   };
 
@@ -88,7 +95,6 @@ const ShippingInfo = ({ handleSteps }) => {
             placeholder="Middle Name"
             className="md:text-[1.3rem] md:py-2 md:px-4 mt-1 md:bg-gray-100 w-full border-gray-300 rounded-md shadow-sm md:border-none outline-none"
             {...register("middleName", {
-              required: "middle name is required",
               pattern: {
                 value: /^[A-Za-z][A-Za-z'-]{1,20}$/,
                 message:

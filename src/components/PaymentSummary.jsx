@@ -1,20 +1,44 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { AiFillSafetyCertificate, AiOutlineSafety } from "react-icons/ai";
 import { IoIosLock } from "react-icons/io";
 import { PiWarningCircleLight } from "react-icons/pi";
 import { Link, useNavigate } from "react-router";
+import { formatPrice } from "../helper/helper";
+import { VAT } from "../constant/constants";
+import { minimumPrice } from "../constant/constants";
+import {
+  updateFinalOrders,
+  updatePromoCode,
+  updateTotalAmountAfterDiscountAndTax,
+} from "../reduxSlicers/appSlicers";
 
 function PaymentSummary({ orders }) {
-  const [promocode, setPromocode] = useState("");
+  const dispatch = useDispatch();
+  const promoCode = useSelector((state) => state.app.promoCode);
+  const user_id = useSelector((state) => state.app.user_id);
+  const [isMinimumPrice, setIsMinimumPrice] = useState(false);
   const navigate = useNavigate();
-  const finalPrice = 9000;
+
+  const supTotal = orders
+    ?.map((order) => order.price * order.quantity)
+    .reduce((acc, price) => acc + price, 0);
+  const totalDiscount = orders
+    ?.map((order) => order.discount * order.quantity)
+    .reduce((acc, price) => acc + price, 0);
+
+  const estimatedTax = ((supTotal - totalDiscount) * VAT) / 100;
+  const finalPrice = supTotal - totalDiscount + estimatedTax;
   function handleCheckout() {
-    if (finalPrice >= 100) {
+    if (finalPrice > minimumPrice) {
+      dispatch(updateFinalOrders(orders));
+      dispatch(updateTotalAmountAfterDiscountAndTax(finalPrice));
       navigate("/checkout");
     } else {
-      alert("final price is less than 100");
+      setIsMinimumPrice(true);
     }
   }
+
   return (
     <div className="sticky top-30 ">
       <div className=" md:w-full md:h-auto md:pl-3 ">
@@ -25,26 +49,31 @@ function PaymentSummary({ orders }) {
           <div>Total Items ({orders?.length ? orders.length : 0})</div>
           <div className="md:w-full flex justify-between text-[0.89rem] text-stone-600 md:my-2 font-semibold">
             <p className="capitalize">subtotal :</p>
-            <p>$9000.00</p>
+            <p className="font-bold text-[1rem] text-stone-900">
+              {supTotal ? formatPrice(supTotal) : formatPrice(0)}
+            </p>
           </div>
           <div className="md:w-full flex justify-between text-[0.89rem] text-stone-600 md:my-2 font-semibold">
             <p className="capitalize">shipping charge :</p>
-            <p>$90.00</p>
+            <p className="text-green-500 font-semibold text-[1.2rem]">Free</p>
           </div>
           <div className="md:w-full flex justify-between text-[0.89rem] text-stone-600 md:my-2  font-semibold ">
             <p className="capitalize">discount :</p>
-            <p>$10.00</p>
+            <p className="font-bold text-[1rem] text-stone-900">
+              {totalDiscount ? formatPrice(totalDiscount) : formatPrice(0)}
+            </p>
           </div>
           <div className="md:w-full flex justify-between text-[0.89rem] text-stone-600 md:my-2 md:pb-3 font-semibold ">
             <p className="capitalize">Estimated tax :</p>
-            <p>$00.00</p>
+            <p className="font-bold text-[1rem] text-stone-900">
+              {estimatedTax ? formatPrice(estimatedTax) : formatPrice(0)}
+            </p>
           </div>
           <div>
-            {/* <p>do you have a promo code?</p> */}
             <input
               type="text"
-              value={promocode}
-              onChange={(e) => setPromocode(e.target.value)}
+              value={promoCode}
+              onChange={(e) => dispatch(updatePromoCode(e.target.value))}
               id="promo"
               name="promo"
               className="md:w-full md:px-3 md:py-2 md:bg-white outline-none rounded "
@@ -58,19 +87,40 @@ function PaymentSummary({ orders }) {
           </div>
           <div className="md:w-full flex justify-between text-[1.1rem]  md:my-2 font-semibold border-t-2 md:pt-2">
             <p className="capitalize">total :</p>
-            <p>${finalPrice}</p>
+            <p className="font-bold">
+              {finalPrice ? formatPrice(finalPrice) : formatPrice(0)}
+            </p>
           </div>
           <div className="text-gray-600 text-sm md:pb-2">
+            {isMinimumPrice && (
+              <>
+                <span className="text-red-500 font-semibold">
+                  Minimum price should be greater than {minimumPrice}
+                </span>
+                <br />
+              </>
+            )}
             <span>Please refer to your final actual amount</span>
           </div>
         </div>
         <div className="flex md:my-3 md:m-auto">
-          <button
-            className="text-[18px] md:py-[8px] md:px-4 md:w-[100%] text-center cursor-pointer cursro-pointer md:bg-indigo-500 text-stone-100 rounded-[10px]"
-            onClick={() => handleCheckout()}
-          >
-            Proceed to checkout
-          </button>
+          {user_id ? (
+            <button
+              className="text-[18px] md:py-[8px] md:px-4 md:w-[100%] text-center cursor-pointer cursro-pointer md:bg-indigo-500 text-stone-100 rounded-[10px]"
+              onClick={() => handleCheckout()}
+            >
+              Proceed to checkout
+            </button>
+          ) : (
+            <button
+              className="text-[18px] md:py-[8px] md:px-4 md:w-[100%] text-center cursor-pointer cursro-pointer md:bg-green-400 text-stone-100 rounded-[10px]"
+              onClick={() => {
+                navigate("/account");
+              }}
+            >
+              Login to Checkout
+            </button>
+          )}
         </div>
         <div className="flex items-center text-[12px] text-gray-600 text-justify">
           <PiWarningCircleLight className="md:text-[1.5rem] md:mr-1" />

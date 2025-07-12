@@ -217,12 +217,12 @@ const About = () => {
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="flex justify-between relative flex-col md:mx-auto bg-stone-800/50  text-stone-300 md:px-[2rem] md:py-[0.5rem] md:w-[31%] md:min-h-[16rem] md:max-h-[16rem] rounded-[15px]"
+                className="flex justify-between relative flex-col md:mx-auto bg-stone-50  text-stone-900 md:px-[2rem] md:py-[0.5rem] md:w-[31%] md:min-h-[16rem] md:max-h-[16rem] rounded-[15px]"
               >
                 <RiDoubleQuotesL className="text-4xl absolute left-[2%] top-6" />
                 <img
                   src={`${testimonial.image}`}
-                  className="md:w-25 md:h-25 absolute top-[-22%] left-[50%] translate-x-[-50%] z-100"
+                  className="md:w-25 md:h-25 absolute top-[-22%] left-[50%] translate-x-[-50%] z-40"
                 />
 
                 <p className="md:mt-12 md:mb-4 text-justify">
@@ -242,7 +242,7 @@ const About = () => {
 
       {/* ----------------------------------features sections----------------------------------------- */}
       <section className=" z-30 ">
-        <div className="flex flex-col justify-between items-center bg-gray-300  md:px-15 md:py-20  ">
+        <div className="flex flex-col justify-between items-center bg-gray-400  md:px-15 md:py-20  ">
           <div className="md:w-[100%] grid grid-cols-1 md:grid-cols-4 gap-5">
             <div className=" flex items-center justify-between bg-white p-6 rounded-lg shadow-md">
               <FaShippingFast className="text-9xl md:pr-5" />

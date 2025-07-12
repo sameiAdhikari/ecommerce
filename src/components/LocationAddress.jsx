@@ -32,15 +32,15 @@ function LocationAddress() {
           <div>
             <div className="flex items-center gap-2 my-[0.6rem]">
               <CiMap className="inline-block mr-2 text-2xl " />
-              <p className="text-lg">1234 Street Name, City, State, 12345</p>
+              <p className="text-lg">Triq Turu Rizzo Il-Gżira GZR, Malta</p>
             </div>
             <div className="flex items-center gap-2 my-[0.6rem]">
               <FiPhoneCall className="inline-block mr-2 text-xl" />
-              <p className="text-lg">Phone: (123) 456-7890</p>
+              <p className="text-lg">Phone: (+356) 99111070</p>
             </div>
             <div className="flex items-center gap-2 my-[0.6rem]">
               <MdOutlineMarkEmailUnread className="inline-block mr-2 text-xl" />
-              <p className="text-lg">Email: example@gmai.com</p>
+              <p className="text-lg">Email: khadkan73@gmail.com</p>
             </div>
             <div className="flex items-center gap-2 my-[0.6rem]">
               <FiClock className="inline-block mr-2 text-xl" />
@@ -48,11 +48,11 @@ function LocationAddress() {
             </div>
           </div>
         </div>
-        <div className="md:w-[60%] md:h-full mx-auto">
+        <div className="relative md:w-[60%] md:h-full mx-auto z-40">
           <select
             value={officeLocations}
             onChange={(e) => setOfficeLocations(e.target.value)}
-            className="w-[13rem] h-10 md:mr-2 md:mb-6 p-2 bg-amber-50 border cursor-pointer border-gray-300 rounded float-end"
+            className="absolute top-4 right-2 z-999 w-[13rem] h-10 md:mr-2 md:mb-6 p-2 bg-amber-50 border-2 cursor-pointer border-gray-900 rounded float-end"
           >
             <option value="kathmandu">Select branch location</option>
             <option value="gaighat">Gaighat</option>

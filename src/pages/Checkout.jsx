@@ -12,6 +12,7 @@ function Checkout() {
   const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
 
+  // console.log(readyToPlaceOrders);
   const handleSteps = () => {
     if (steps === checkOutTopic.length) {
       setIsCompleted(true);
