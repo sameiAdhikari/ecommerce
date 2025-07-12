@@ -3,7 +3,7 @@ import { usePromotions } from "../services/useProducts";
 
 function LandingPage() {
   const navigate = useNavigate();
-  const { promotions } = usePromotions();
+  const { promotions, isLoading } = usePromotions();
   return (
     <section className="relative top-[7rem] flex flex-col md:flex-row justify-between bg-gradient-to-r from-indigo-50 to-indigo-200 md:mb-[7rem] md:p-16 h-[84vh] overflow-hidden">
       {/* Left Content */}
@@ -41,7 +41,9 @@ function LandingPage() {
           src={promotions?.[0].images?.[0]} // Replace with your image path
           alt="Model"
           // className="relative right-10 md:bottom-20 z-10 w-72 md:w-130  object-contain"
-          className=" relative right-5 bottom-0 w-full h-[110%]"
+          className={` relative right-5 bottom-0 w-full h-[110%] ${
+            isLoading ? "blur-2xl" : ""
+          }`}
         />
       </div>
     </section>
