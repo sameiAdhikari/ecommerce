@@ -1,12 +1,6 @@
 import { Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Navigate,
-  Outlet,
-  useLocation,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 // import { jwtDecode } from "jwt-decode";
 import CheckoutSidebar from "../components/CheckoutSidebar";
 import Footer from "../components/Footer";
@@ -23,7 +17,7 @@ import {
 
 function AppLayout() {
   const dispatch = useDispatch();
-  const navigate = useNavigation();
+
   const location = useLocation();
   const orderList = useSelector((state) => state.app.orderList);
   useEffect(() => {
@@ -34,7 +28,6 @@ function AppLayout() {
 
       if (!data) return;
       dispatch(updateUserId(data.user.id));
-      navigate("/");
     }
     getUserSession();
     const isOrderListStored = JSON.parse(localStorage.getItem("orderList"));
@@ -46,7 +39,7 @@ function AppLayout() {
 
     const allIds = orderList.map((order) => order.productId);
     dispatch(updateSelectItems(allIds));
-  }, [dispatch, orderList, location, navigate]);
+  }, [dispatch, orderList, location]);
   return (
     <div className="flex">
       <div
