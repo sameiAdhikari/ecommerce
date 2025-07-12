@@ -142,7 +142,7 @@ function PaymentInfo({ handleSteps }) {
                   ? cardInfo?.expiryMonth
                   : watch("expiryMonth") || "January"
               }
-              className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
+              className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm border-none outline-none"
               {...register("expiryMonth", {
                 onChange: (e) => setValue(e.target.value),
               })}
@@ -165,7 +165,7 @@ function PaymentInfo({ handleSteps }) {
                   ? cardInfo.expiryYear
                   : watch("expiryYear") || new Date().getFullYear()
               }
-              className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm  outline-none"
+              className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-full rounded-md shadow-sm border-none outline-none"
               {...register("expiryYear", {
                 onChange: (e) => setValue(e.target.value),
               })}

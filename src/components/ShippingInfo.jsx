@@ -157,7 +157,7 @@ const ShippingInfo = ({ handleSteps }) => {
           {...register("contactNumber", {
             required: "contact number is required",
             pattern: {
-              value: /^(\+)?([0-9]{1,3})?[0-9]{10}$/,
+              value: /^(\+)?([0-9]{1,3})?[0-9]{10,}$/,
               message: "Enter a valid 10-digit phone number",
             },
           })}

@@ -135,7 +135,7 @@ const CustomerInfo = ({ handleSteps }) => {
           <select
             value={countryCode}
             onChange={(e) => setcountryCode(e.target.value)}
-            className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-[30%] rounded-md shadow-sm  outline-none"
+            className="md:text-[1.3rem] md:py-2 md:px-4 mt-1  md:bg-gray-200 w-[30%] rounded-md shadow-sm border-none outline-none"
           >
             {arrangeCountry?.map((country) => {
               const ctCode = country.idd.root + country.idd.suffixes?.[0];
