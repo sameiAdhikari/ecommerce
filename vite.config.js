@@ -8,4 +8,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@headlessui/react"],
   },
+  build: {
+    outDir: "dist",
+  },
 });
