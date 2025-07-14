@@ -8,7 +8,7 @@ const Input = React.forwardRef(function Input(
     <div className="flex flex-col   md:mb-2">
       <label
         htmlFor={`${label}`}
-        className={`font-semibold text-[${fontsize || "1.3rem"}]`}
+        className={`capitalize font-semibold text-[${fontsize || "1.3rem"}]`}
       >
         {label}
       </label>

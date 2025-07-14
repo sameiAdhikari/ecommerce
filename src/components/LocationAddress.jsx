@@ -3,20 +3,25 @@ import { CiMap } from "react-icons/ci";
 import { FiClock, FiPhoneCall } from "react-icons/fi";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import Map from "../components/Map";
+import Spinner from "./Spinner";
+import SpinnerMini from "./SpinnerMini";
 function LocationAddress() {
   const [location, setLocation] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [officeLocations, setOfficeLocations] = useState("");
   const apiKey = import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
     async function fetchLocaton() {
       if (!officeLocations) return;
+      setIsLoading(true);
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${officeLocations}&key=${apiKey}`
       );
       if (!response.ok) throw new Error("Failed to fetch location data");
       const data = await response.json();
       setLocation(data.results[0].geometry.location);
+      setIsLoading(false);
     }
     fetchLocaton();
   }, [officeLocations, apiKey]);
@@ -60,7 +65,7 @@ function LocationAddress() {
             <option value="jhapa">Jhapa</option>
             <option value="biratnagar">Biratnagar</option>
           </select>
-          <Map location={location} />
+          {isLoading ? <SpinnerMini /> : <Map location={location} />}
         </div>
       </div>
     </div>

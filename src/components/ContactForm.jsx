@@ -4,7 +4,9 @@ import Input from "./Input";
 function ContactForm() {
   const {
     register,
+    watch,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -26,12 +28,12 @@ function ContactForm() {
           feel free to reach out !
         </h1>
         <div className="flex items-center justify-between md:w-[80%] md:h-auto md:rounded-lg md:shadow-lg md:pt-10 md:px-10 md:pb-30 bg-black/80 text-stone-100">
-          <div className="md:w-[50%] md:h-auto flex flex-col gap-4 ">
+          <div className="md:w-[50%] flex flex-col gap-4 ">
             <div className="md:h-[6rem]">
               <Input
-                label="name"
+                label="full Name"
                 type="text"
-                placeholder="Your Name"
+                placeholder="Enter your name"
                 errors={errors}
                 {...register("name", {
                   required: "Name is required",
@@ -45,7 +47,7 @@ function ContactForm() {
             </div>
             <div className="md:h-[6rem]">
               <Input
-                label="email"
+                label="email address"
                 type="email"
                 placeholder="Email Address"
                 {...register("email", {
@@ -65,15 +67,21 @@ function ContactForm() {
 
             <div className="md:h-[6rem]">
               <Input
-                label="contact"
+                label="contact number"
                 type="tel"
-                placeholder="Contact Number"
+                value={watch("contact") || ""}
+                placeholder="+35699111070"
                 {...register("contact", {
                   required: "Contact number is required",
-                  pattern: {
-                    value: /^(\+\d{2,3})\d{8}$/,
-                    message:
-                      "Invalid format. use +(country code) followed by 8 digits",
+                  // pattern: {
+                  //   value: /^\D$/,
+                  //   message:
+                  //     "Invalid format. use +(country code) followed by 8 digits",
+                  // },
+                  onChange: (e) => {
+                    const onlyNumbers = e.target.value.replace(/\D/, "");
+                    setValue("contact", onlyNumbers);
+                    return;
                   },
                 })}
               />
@@ -84,23 +92,28 @@ function ContactForm() {
               )}
             </div>
           </div>
-          <div className="md:w-[45%] md:h-[100%] relative">
-            <div className="flex flex-col items-start justify-between md:pb-7 ">
+          <div className="md:w-[45%]  relative ">
+            <div className="flex flex-col items-start justify-between ">
               <label
                 htmlFor="message"
-                className="md:mt-3 font-semibold text-[1.3rem]"
+                className="font-semibold text-[1.3rem] mb-1"
               >
                 Message
               </label>
               <textarea
                 id="message"
                 name="message"
-                rows="8"
+                rows="9"
                 placeholder="Your message here..."
                 // required
-                // {...register("message", { required: "Message is required" })}
-                className="text-stone-100 text-[1.2rem] border-b-2 border-blue-100 md:pt-2 md:px-4 md:pb-5   outline-none focus:outline-none w-full md:h-[100%] resize-none"
+                {...register("message", { required: "Message is required" })}
+                className=" text-stone-100 text-[1.2rem] border-b-2 border-blue-100 md:px-4 md:pb-2   outline-none focus:outline-none w-full md:h-[100%] resize-none"
               ></textarea>
+              {errors.message && (
+                <span className="text-red-500 mt-3  text-sm">
+                  {errors.message.message || "Contact number is required"}
+                </span>
+              )}
             </div>
             <div className="flex items-center justify-end absolute right-0 ">
               <button
@@ -119,7 +132,7 @@ function ContactForm() {
           </div> */}
           <div>
             <p>For urgent inquiries, please contact us at:</p>
-            <p>+xxxxxxxxxxxxxxxx</p>
+            <p>+35699111070</p>
           </div>
         </div>
       </div>
