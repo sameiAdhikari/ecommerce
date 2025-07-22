@@ -23,7 +23,7 @@ function SingleProduct({ product }) {
 
   return (
     <div
-      className="md:p-2   md:pb-6 cursor-pointer  rounded-lg md:m-3 md:mt-3 md:w-[25%]  mx-auto border border-gray-400  hover:shadow-2xl hover:shadow-indigo-600 transition-shadow"
+      className="md:p-2   md:pb-6 cursor-pointer  rounded-lg md:m-3 md:mt-3 md:w-[31%]  mx-auto border border-gray-400  hover:shadow-2xl hover:shadow-indigo-600 transition-shadow"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
