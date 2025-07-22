@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ContactForm from "../components/ContactForm";
 import LocationAddress from "../components/LocationAddress";
 import OurTeam from "../components/OurTeam";
@@ -6,6 +6,9 @@ import SeniorManagementTeam from "../components/SeniorManagementTeam";
 
 function Contact() {
   const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <section>
       {/* -----------------------------hero section------------------------------------- */}

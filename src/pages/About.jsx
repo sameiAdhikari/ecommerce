@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -37,7 +37,10 @@ const testimonials = [
 ];
 
 const About = () => {
-  const brandName = "SamJhana Store";
+  const brandName = "KhadkaG";
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <section>
