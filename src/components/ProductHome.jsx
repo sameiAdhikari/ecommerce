@@ -149,7 +149,7 @@ function ProductHome() {
               <option value="discount">Dicounted offers</option>
             </select>
           </div>
-          <div className="flex flex-wrap">
+          <div className="grid grid-cols-3">
             <Suspense fallback={<Spinner />}>
               {itemsPerPage?.map((product) => (
                 <SingleProduct product={product} key={product.id} />
