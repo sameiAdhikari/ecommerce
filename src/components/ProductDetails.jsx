@@ -30,6 +30,7 @@ function ElectronicPageDetails() {
   const { product, isLoading } = useRespectiveProduct(productId);
   const localStorageOrderList =
     JSON.parse(localStorage.getItem("orderList")) || [];
+  const [publicImages, setPublicImages] = useState();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -46,6 +47,12 @@ function ElectronicPageDetails() {
     );
     localStorage.setItem("recentView", JSON.stringify(product));
     window.scrollTo(0, 0);
+    const urls = product?.images.map((image) => {
+      const url = supabase.storage.from("product-image").getPublicUrl(image)
+        .data.publicUrl;
+      return url;
+    });
+    setPublicImages(urls);
   }, [product]);
   if (isLoading) return <Spinner />;
 
@@ -74,13 +81,11 @@ function ElectronicPageDetails() {
         <div className="mt-3">
           <div className="flex gap-3 ">
             <div className="flex flex-col gap-4 h-fit">
-              {product?.images.map((image, i) => {
-                const url = supabase.storage
-                  .from("product-image")
-                  .getPublicUrl(image).data.publicUrl;
+              {publicImages?.map((image, i) => {
+                console.log(image);
                 return (
                   <img
-                    src={url}
+                    src={image}
                     key={i}
                     data-id={i}
                     className="w-[5rem] h-[6rem] cursor-pointer object-contain rounded p-1"
