@@ -14,9 +14,8 @@ import {
 } from "../helper/helper";
 import { updateOrderList, updateSelectItems } from "../reduxSlicers/appSlicers";
 import { useRespectiveProduct } from "../services/useProducts";
-import Star from "./Star";
 import Spinner from "./Spinner";
-import supabase from "../lib/supabase";
+import Star from "./Star";
 
 function ElectronicPageDetails() {
   const { productId } = useParams();
@@ -30,7 +29,6 @@ function ElectronicPageDetails() {
   const { product, isLoading } = useRespectiveProduct(productId);
   const localStorageOrderList =
     JSON.parse(localStorage.getItem("orderList")) || [];
-  const [publicImages, setPublicImages] = useState();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -47,12 +45,6 @@ function ElectronicPageDetails() {
     );
     localStorage.setItem("recentView", JSON.stringify(product));
     window.scrollTo(0, 0);
-    const urls = product?.images.map((image) => {
-      const url = supabase.storage.from("product-image").getPublicUrl(image)
-        .data.publicUrl;
-      return url;
-    });
-    setPublicImages(urls);
   }, [product]);
   if (isLoading) return <Spinner />;
 
@@ -81,7 +73,7 @@ function ElectronicPageDetails() {
         <div className="mt-3">
           <div className="flex gap-3 ">
             <div className="flex flex-col gap-4 h-fit">
-              {publicImages?.map((image, i) => {
+              {product?.images.map((image, i) => {
                 console.log(image);
                 return (
                   <img
