@@ -132,7 +132,7 @@ function ProductHome() {
 
   return (
     <>
-      <div className="md:w-full md:h-auto md:mt-[7.6rem] pb-[1px] md:grid md:grid-cols-[15rem_1fr] ">
+      <div className="md:w-full md:h-auto md:mt-[7.6rem] pb-[1px] md:grid md:grid-cols-[14rem_1fr] ">
         <ProductSidebar />
         <div className="md:flex md:flex-wrap border  border-gray-400 md:p-3">
           <div className="md:w-full  md:h-10 md:flex md:items-center md:justify-between border-b md:pb-3 md:mr-3">
