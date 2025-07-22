@@ -135,7 +135,7 @@ function ProductHome() {
       <div className="md:w-full md:h-auto md:mt-[7.6rem] pb-[1px] md:grid md:grid-cols-[15rem_1fr] ">
         <ProductSidebar />
         <div className="md:flex md:flex-wrap border  border-gray-400 md:p-3">
-          <div className="md:w-full  md:h-10 md:flex md:items-center md:justify-between border-b md:pb-3 md:mr-7">
+          <div className="md:w-full  md:h-10 md:flex md:items-center md:justify-between border-b md:pb-3 md:mr-3">
             <div>
               <h2>Total Results ({filterProduct.length})</h2>
             </div>
@@ -149,11 +149,13 @@ function ProductHome() {
               <option value="discount">Dicounted offers</option>
             </select>
           </div>
-          <Suspense fallback={<Spinner />}>
-            {itemsPerPage?.map((product) => (
-              <SingleProduct product={product} key={product.id} />
-            ))}
-          </Suspense>
+          <div className="flex flex-wrap justify-between">
+            <Suspense fallback={<Spinner />}>
+              {itemsPerPage?.map((product) => (
+                <SingleProduct product={product} key={product.id} />
+              ))}
+            </Suspense>
+          </div>
           <div className="w-full h-auto">
             <div className="flex items-center justify-center">
               <button
