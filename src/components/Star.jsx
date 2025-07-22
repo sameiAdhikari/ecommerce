@@ -19,11 +19,6 @@ function Star({ rating, size, ratingLength }) {
             className="relative"
             style={{ width: size, height: size }}
           >
-            {/* <HiOutlineStar
-           className={` text-stone-900 cursor-pointer  ${
-             i < Math.floor(rating) ? "text-yellow-500 fill-yellow-500" : ""
-           }`}
-         /> */}
             <HiOutlineStar className="text-yellow-500 w-full h-full cursor-pointer" />
             <HiOutlineStar
               className=" fill-yellow-500 text-yellow-500 w-full h-full absolute top-0 left-0"

@@ -30,6 +30,7 @@ function Cart() {
   let finalProducts;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     async function getOrders() {
       const order = orderList.map(async ({ productId, quantity }) => {
         const { data, error } = await supabase

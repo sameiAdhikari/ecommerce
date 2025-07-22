@@ -16,6 +16,7 @@ import { updateOrderList, updateSelectItems } from "../reduxSlicers/appSlicers";
 import { useRespectiveProduct } from "../services/useProducts";
 import Star from "./Star";
 import Spinner from "./Spinner";
+import supabase from "../lib/supabase";
 
 function ElectronicPageDetails() {
   const { productId } = useParams();
@@ -73,19 +74,24 @@ function ElectronicPageDetails() {
         <div className="mt-3">
           <div className="flex gap-3 ">
             <div className="flex flex-col gap-4 h-fit">
-              {product?.images.map((image, i) => (
-                <img
-                  src={image}
-                  key={i}
-                  data-id={i}
-                  className="w-[5rem] h-[6rem] cursor-pointer object-contain rounded p-1"
-                  style={{
-                    border: imagePosition == i ? "2px solid #4f46e5" : "",
-                  }}
-                  // onClick={(e) => handleImageChange(e)}
-                  onMouseEnter={(e) => handleImageChange(e)}
-                />
-              ))}
+              {product?.images.map((image, i) => {
+                const url = supabase.storage
+                  .from("product-image")
+                  .getPublicUrl(image).data.publicUrl;
+                return (
+                  <img
+                    src={url}
+                    key={i}
+                    data-id={i}
+                    className="w-[5rem] h-[6rem] cursor-pointer object-contain rounded p-1"
+                    style={{
+                      border: imagePosition == i ? "2px solid #4f46e5" : "",
+                    }}
+                    // onClick={(e) => handleImageChange(e)}
+                    onMouseEnter={(e) => handleImageChange(e)}
+                  />
+                );
+              })}
             </div>
 
             <img

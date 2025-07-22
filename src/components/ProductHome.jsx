@@ -32,13 +32,6 @@ function ProductHome() {
   let filterSubCategory;
   useEffect(() => {
     window.scrollTo(0, 0);
-    // const navEntries = performance.getEntriesByType("navigation");
-    // console.log(navEntries?.[0].type);
-    // if (location.search) {
-    //   navigate("/products", { replace: true });
-    //   // dispatch(updateActiveTab(0));
-    // }
-    // eslint-disable-next-line
   }, [search]);
   if (isLoading || !products || products.length === 0) return <Spinner />;
 

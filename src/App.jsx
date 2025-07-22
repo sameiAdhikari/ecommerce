@@ -30,7 +30,7 @@ const JoinAffiliatePage = lazy(() => import("./pages/JoinAffiliate"));
 const ReturnPolicyPage = lazy(() => import("./pages/ReturnPolicy"));
 const ForgotPasswordPage = lazy(() => import("./components/ForgotPassword"));
 const UpdatePasswordPage = lazy(() => import("./components/UpdatePassword"));
-const routerObj = createBrowserRouter([
+const routers = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
@@ -58,12 +58,11 @@ const routerObj = createBrowserRouter([
   },
   { path: "*", element: <PageNotFound /> },
 ]);
-
 const RouterConfig = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <RouterProvider router={routerObj} />
+        <RouterProvider router={routers} />
         <ToastContainer style={{ width: "50px", height: "20px" }} />
       </Provider>
       <ReactQueryDevtools initialIsOpen={true} />

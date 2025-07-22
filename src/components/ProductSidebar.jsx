@@ -60,9 +60,11 @@ function ProductSidebar() {
                   className="md:w-4 md:h-4 cursor-pointer"
                 />
                 {index === 2 ? (
-                  <label>${index * 1000} & Above </label>
+                  <label className="cursor-pointer">
+                    ${index * 1000} & Above{" "}
+                  </label>
                 ) : (
-                  <label>
+                  <label className="cursor-pointer">
                     ${index * 1000}-${index * 1000 + 1000}
                   </label>
                 )}
