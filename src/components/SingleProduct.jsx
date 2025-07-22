@@ -23,7 +23,7 @@ function SingleProduct({ product }) {
 
   return (
     <div
-      className="md:p-2   md:pb-6 cursor-pointer  rounded-lg md:m-3 md:mt-3   mx-auto border border-gray-400  hover:shadow-2xl hover:shadow-indigo-600 transition-shadow"
+      className="md:p-2   md:pb-6 cursor-pointer  rounded-lg md:mr-2 md:mt-3   mx-auto border border-gray-400  hover:shadow-2xl hover:shadow-indigo-600 transition-shadow"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -32,7 +32,7 @@ function SingleProduct({ product }) {
           src={product?.images?.[0]}
           alt="Saree"
           className="w-full h-full object-cover rounded-lg   transition-all duration-300"
-          style={{ scale: isHover ? "105%" : "" }}
+          style={{ scale: isHover ? "102%" : "" }}
         />
       </div>
 

@@ -41,7 +41,7 @@ function AppLayout() {
     dispatch(updateSelectItems(allIds));
   }, [dispatch, orderList, location]);
   return (
-    <div className="flex">
+    <div className="">
       <div
         // this is for the width of the main content area which will be shown only in the products page
         className={
