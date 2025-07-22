@@ -31,6 +31,8 @@ function ElectronicPageDetails() {
     JSON.parse(localStorage.getItem("orderList")) || [];
 
   useEffect(() => {
+    if (!product?.images) return;
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const response = await fetch(
@@ -74,7 +76,6 @@ function ElectronicPageDetails() {
           <div className="flex gap-3 ">
             <div className="flex flex-col gap-4 h-fit">
               {product?.images.map((image, i) => {
-                console.log(image);
                 return (
                   <img
                     src={image}
