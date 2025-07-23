@@ -36,6 +36,7 @@ function PaymentInfo({ handleSteps }) {
   );
   const cardInfo = JSON.parse(localStorage.getItem("cardInformation"));
   const [isSave, setIsSave] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -54,6 +55,7 @@ function PaymentInfo({ handleSteps }) {
 
   const submitForm = async (data) => {
     // make a api call to complete a payment make sure it's asynchronus function so that it wait to proceed;
+
     const PaymentVarification = true;
     const newData = {
       order_id,
@@ -65,7 +67,6 @@ function PaymentInfo({ handleSteps }) {
       order_status: "confirmed",
       payment_status: PaymentVarification ? "confirmed" : "pending",
     };
-
     await insertCardInfo(newData);
     dispatch(resetOrderList());
     localStorage.setItem("orderList", JSON.stringify([]));
@@ -218,10 +219,12 @@ function PaymentInfo({ handleSteps }) {
         >
           Previous
         </button>
-        <button className="bg-indigo-100 text-2xl md:py-2 md:px-6 rounded text-stone-100 cursor-pointer">
-          {steps === 3 ? "Finish" : "Next"}
-          {/* Next */}
-        </button>
+        <div>
+          <button className="bg-indigo-100 text-2xl md:py-2 md:px-6 rounded text-stone-100 cursor-pointer">
+            {steps === 3 ? "Finish" : "Next"}
+            {/* Next */}
+          </button>
+        </div>
       </div>
     </form>
   );
