@@ -86,7 +86,7 @@ function Cart() {
         <div className="flex">
           <div className="md:w-[75%] pr-4 border-r-2 border-gray-400">
             <div className="z-999">
-              <div className="md:h-[3rem] grid grid-cols-[4.5rem_20%_30%_1fr_1fr_1fr_3.5rem] items-center bg-yellow-600 capitalize  font-semibold text-stone-50">
+              <div className="sticky top-0 left-0 md:h-[3rem] grid grid-cols-[4.5rem_20%_30%_1fr_1fr_1fr_3.5rem] items-center bg-yellow-600 capitalize  font-semibold text-stone-50">
                 <div></div>
                 <div></div>
                 <div className="md:pl-3">descriptions</div>

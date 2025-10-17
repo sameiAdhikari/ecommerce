@@ -57,32 +57,11 @@ function Header() {
     navigate("/products");
   };
 
-  // const handleUpload = async () => {
-  //   try {
-  //     const returnData = await Promise.all(
-  //       data.map(async (product) => {
-  //         const { error } = await supabase.from("products").insert([product]);
-  //         if (error) throw new Error(error.message);
-  //         return data;
-  //       })
-  //     );
-  //     await Promise.all(returnData);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
   return (
     <>
       <div
         className={`fixed top-0 left-0 z-50 flex justify-between items-center px-[4rem] text-[var(--color-brand-500)] bg-gray-800 h-[5rem] shadow-xl/30 shadow-indigo-700 w-full`}
       >
-        {/* <button
-          className="fixed top-35 left-0 p-4 rounded-full bg-red-500 z-50 "
-          onClick={handleUpload}
-        >
-          upload
-        </button> */}
         <div className="flex align-middle">
           <Link to="/">
             <img
@@ -110,7 +89,7 @@ function Header() {
           />
           <FiSearch
             className="md:absolute top-1/2 left-[97%] rounded-tr-[5px] rounded-br-[5px] -translate-y-1/2 md:h-full md:w-[2.5rem] cursor-pointer md:text-2xl md:bg-[var(--color-brand-600)] hover:md:bg-[var(--color-brand-100)] transition-all duration-200"
-            onClick={() => handleNavigate()}
+            onClick={(e) => handleNavigate(e)}
           />
         </div>
         <ul className="flex justify-between items-center w-[25%] text-xl font-medium">
@@ -123,19 +102,16 @@ function Header() {
           <List linkTo="contact" after="true">
             Contact
           </List>
-          <Link
-            to="cart"
-            className="text-3xl hover:text-indigo-500 duration-300"
-          >
-            <TiShoppingCart />
-          </Link>
+          <List linkTo="cart" className="text-3xl " after="true">
+            <TiShoppingCart className="text-[26px]" after="true" />
+          </List>
           <form>
-            <Link
-              to="account"
-              className="text-2xl hover:text-indigo-500 duration-300"
+            <List
+              linkTo="account"
+              className="text-3xl hover:text-indigo-500 duration-300"
             >
-              <VscAccount />
-            </Link>
+              <VscAccount className="text-[26px]" />
+            </List>
           </form>
           {/* </div> */}
         </ul>

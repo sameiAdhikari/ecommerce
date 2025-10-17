@@ -54,9 +54,9 @@ function AccountProfiles() {
           <VscAccount className="w-13 h-13 " />
         )}
         <div>
-          <h2 className="text-xl font-semibold">{user.name}</h2>
-          <p className="text-gray-600">{user.email}</p>
-          <p className="text-gray-600">{user.phone}</p>
+          <h2 className="text-xl font-semibold">{user?.name}</h2>
+          <p className="text-gray-600">{user?.email}</p>
+          <p className="text-gray-600">{user?.phone}</p>
         </div>
       </div>
       {/* Account Info //{" "} */}

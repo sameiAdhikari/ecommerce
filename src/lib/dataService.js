@@ -136,12 +136,15 @@ export async function signInWithGoogle() {
 }
 
 export async function getPromotions() {
-  const { data, error } = await supabase
+  const { data: products, error } = await supabase
     .from("products")
     .select("*")
     .eq("promotion", true);
-  if (error) throw new Error(error.message);
-  return data;
+  // const { data: products, error } = await supabase
+  //   .from("promotions")
+  //   .select("*");
+  if (error) console.log(error);
+  return products;
 }
 
 export async function getUser() {

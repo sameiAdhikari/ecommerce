@@ -257,9 +257,9 @@ const Home = () => {
       {/* ------------------------------continue shopping for ---------------------------------------------*/}
 
       <section className="bg-gray-400 pb-7">
-        <div className="w-[94.5%]  h-[25rem] m-auto overflow-x-scroll bg-white p-5">
+        <div className="w-[94.5%]  h-[25rem] m-auto  bg-white p-5">
           <h2 className="text-2xl pb-3 font-semibold">Continue shopping for</h2>
-          <div className="w-full h-[85%]">
+          <div className="w-full h-[85%] overflow-x-scroll">
             <div className="w-auto flex h-full gap-7 ">
               <div
                 className="flex flex-col flex-shrink-0 justify-between pt-5 h-full"

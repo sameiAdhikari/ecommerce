@@ -101,7 +101,7 @@ function Account() {
                   </button>
                 </li>
               ))}
-              <li className=" w-full h-[2.5rem] text-stone-50 flex justify-center items-center bg-red-600 hover:bg-red-700 transition-all duration-200 cursor-pointer">
+              <li className="mt-70 w-full h-[2.5rem] text-stone-50 flex justify-center items-center bg-red-600 hover:bg-red-700 transition-all duration-200 cursor-pointer">
                 <button
                   className="  text-2xl cursor-pointer font-semibold"
                   onClick={handleLogout}

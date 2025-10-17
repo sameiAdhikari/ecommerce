@@ -143,3 +143,11 @@ export function useGetAllOrdersList() {
   if (error) throw new Error(error.message);
   return { allOrders, isLoading };
 }
+
+// [
+//   "https://evzztiqbbdthaiuacxdj.supabase.co/storage/v1/object/sign/promotion/banner2.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80YjBlYWE5OC03NTlmLTQzOGEtYTA2OC1jMTFmMzAzODk4MDkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9tb3Rpb24vYmFubmVyMi5qcGciLCJpYXQiOjE3NTIyNjA3NDYsImV4cCI6MTc4Mzc5Njc0Nn0.0JFSfLXwK_rL9TAzi8G_gTIDf6l9EBkQ5CEAXV1bSdQ",
+//   "https://evzztiqbbdthaiuacxdj.supabase.co/storage/v1/object/sign/promotion/model2.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80YjBlYWE5OC03NTlmLTQzOGEtYTA2OC1jMTFmMzAzODk4MDkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9tb3Rpb24vbW9kZWwyLmpwZyIsImlhdCI6MTc1MjI2MDc5OSwiZXhwIjoxNzgzNzk2Nzk5fQ.1USNUVuYdy3WQakJv0pvm4ZQEZ9cig-BSM-lDG4mwVY",
+//   "https://evzztiqbbdthaiuacxdj.supabase.co/storage/v1/object/sign/promotion/model22.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80YjBlYWE5OC03NTlmLTQzOGEtYTA2OC1jMTFmMzAzODk4MDkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9tb3Rpb24vbW9kZWwyMi5qcGciLCJpYXQiOjE3NTIyNjA4NjQsImV4cCI6MTc4Mzc5Njg2NH0.5Rkg8jwAfJQA4pCysOjy82xsgNtUI56FI6D3XEnW3uo",
+//   "https://evzztiqbbdthaiuacxdj.supabase.co/storage/v1/object/sign/promotion/model222.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80YjBlYWE5OC03NTlmLTQzOGEtYTA2OC1jMTFmMzAzODk4MDkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9tb3Rpb24vbW9kZWwyMjIuanBnIiwiaWF0IjoxNzUyMjYwODkyLCJleHAiOjE3ODM3OTY4OTJ9.JeB4vrfFjW6ULyQ0UB6jbtvB0lpgZ-Ey9XVrXxTUGHk",
+// ];
+// ("https://evzztiqbbdthaiuacxdj.supabase.co/storage/v1/object/public/promotion/banner2.png?token =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2enp0aXFiYmR0aGFpdWFjeGRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0NTI5MTQsImV4cCI6MjA2NTAyODkxNH0.0rSyzdYaNuuB3AX4y00l1rkLsiXGn1xkvBA3mR9x18M");

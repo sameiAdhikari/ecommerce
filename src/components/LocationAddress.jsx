@@ -20,7 +20,7 @@ function LocationAddress() {
       );
       if (!response.ok) throw new Error("Failed to fetch location data");
       const data = await response.json();
-      setLocation(data.results[0].geometry.location);
+      setLocation(data.results[0]?.geometry?.location);
       setIsLoading(false);
     }
     fetchLocaton();
