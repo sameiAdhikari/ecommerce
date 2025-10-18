@@ -1,13 +1,11 @@
-import { VscAccount } from "react-icons/vsc";
-import { formatPrice } from "../helper/helper";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { getOrdersByUserId } from "../lib/dataService";
-import { Link } from "react-router";
 import { closestTo } from "date-fns";
-import { CiLock } from "react-icons/ci";
-import { FaClock } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { LuAlarmClock } from "react-icons/lu";
+import { VscAccount } from "react-icons/vsc";
+import { useSelector } from "react-redux";
+import { Link } from "react-router";
+import { formatPrice } from "../helper/helper";
+import { getOrdersByUserId } from "../lib/dataService";
 
 function AccountProfiles() {
   const currentSession = useSelector((state) => state.app.currentSession);
@@ -19,9 +17,9 @@ function AccountProfiles() {
       async function getOrderList() {
         const fetchdata = await getOrdersByUserId(user_id);
         if (fetchdata.length > 0) {
-          const closest = fetchdata.map((order) => order.placed_at);
+          const closest = fetchdata?.map((order) => order.placed_at);
           const closestTime = closestTo(new Date(), closest);
-          const closestOrder = fetchdata.find((order) => {
+          const closestOrder = fetchdata?.find((order) => {
             if (new Date(order.placed_at).getTime() === closestTime.getTime())
               return order;
           });
@@ -42,7 +40,6 @@ function AccountProfiles() {
   return (
     <div>
       {/* // Profile Header //{" "} */}
-      {/* <h3 className="text-lg font-semibold mb-4">Account Information</h3> */}
       <div className="bg-white rounded-xl shadow-sm p-6 mb-6 flex items-center gap-6 border-2  border-gray-300">
         {user?.avatar_url ? (
           <img
@@ -59,24 +56,6 @@ function AccountProfiles() {
           <p className="text-gray-600">{user?.phone}</p>
         </div>
       </div>
-      {/* Account Info //{" "} */}
-      {/* <div className="bg-white rounded-xl shadow-sm p-6 mb-6 border-2  border-gray-300">
-        <h3 className="text-lg font-semibold mb-4">Account Information</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
-          <div>
-            <span className="font-medium">Full Name:</span> {user.name}
-          </div>
-          <div>
-            <span className="font-medium">Email:</span> {user.email}
-          </div>
-          <div>
-            <span className="font-medium">Phone:</span> {user.phone}
-          </div>
-          <div>
-            <span className="font-medium">Address:</span> {user.address}
-          </div>
-        </div>
-      </div> */}
       {/* // Recent Orders  */}
       <div className="bg-white rounded-xl shadow-sm p-6 border-2  border-gray-300">
         <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
@@ -104,10 +83,10 @@ function AccountProfiles() {
               return (
                 <div
                   className="flex items-center gap-10 border text-[1rem] my-2 px-4 py-2"
-                  key={order.id}
+                  key={order?.id}
                 >
                   <img src={order?.images?.[0]} className="w-[15%] h-25"></img>
-                  <p className="w-[40%]">{order.descriptions}</p>
+                  <p className="w-[40%]">{order?.descriptions}</p>
                   <p className="flex items-center flex-col">
                     <span className="">Per unit</span>
                     <span className="font-semibold">

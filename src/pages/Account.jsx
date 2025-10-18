@@ -90,14 +90,14 @@ function Account() {
           <aside className=" w-64 bg-white shadow-md p-6 hidden md:block">
             <div className="text-xl font-bold mb-8">My Account</div>
             <ul className=" h-[70vh] text-xl space-y-4 text-gray-700">
-              {sideBarList.map((data, i) => (
+              {sideBarList?.map((data, i) => (
                 <li key={data.label}>
                   <button
                     className=" hover:text-blue-600 cursor-pointer capitalize font-semibold"
                     style={{ color: isActive === i ? "blue" : "" }}
                     onClick={() => handleClickSideBar(i)}
                   >
-                    {data.label}
+                    {data?.label}
                   </button>
                 </li>
               ))}
@@ -112,7 +112,7 @@ function Account() {
             </ul>
           </aside>
           <main className="flex-1 p-4 ">
-            {sideBarList.map(
+            {sideBarList?.map(
               (data, i) =>
                 i === isActive && <span key={data.label}>{data.component}</span>
             )}
