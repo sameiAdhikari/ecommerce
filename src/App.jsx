@@ -64,7 +64,7 @@ const RouterConfig = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <ErrorBoundary fallback={() => <Error />}>
+        <ErrorBoundary fallback={<Error />}>
           <RouterProvider router={routers} />
         </ErrorBoundary>
         <ToastContainer style={{ width: "50px", height: "20px" }} />
