@@ -5,6 +5,7 @@ import RouterConfig from "./App";
 
 // import App from "./App.jsx";
 import * as Sentry from "@sentry/react";
+import Error from "./components/Error";
 
 if (import.meta.env.MODE === "production") {
   Sentry.init({
@@ -20,6 +21,8 @@ if (import.meta.env.MODE === "production") {
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* <App /> */}
-    <RouterConfig />
+    <Sentry.ErrorBoundary fallback={<Error />}>
+      <RouterConfig />
+    </Sentry.ErrorBoundary>
   </StrictMode>
 );
