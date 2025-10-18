@@ -92,8 +92,8 @@ function AccountProfiles() {
                     <span className="font-semibold">
                       {formatPrice(
                         order?.discount
-                          ? order.price - order.discount
-                          : order.price
+                          ? order?.price - order?.discount
+                          : order?.price
                       )}
                     </span>
                   </p>
@@ -106,8 +106,8 @@ function AccountProfiles() {
                     <span className="font-semibold">
                       {formatPrice(
                         (order?.discount
-                          ? order.price - order.discount
-                          : order.price) * order.quantity
+                          ? order?.price - order?.discount
+                          : order?.price) * order?.quantity
                       )}
                     </span>
                   </p>
