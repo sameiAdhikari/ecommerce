@@ -8,6 +8,8 @@ import store from "../store";
 import AppLayout from "./pages/AppLayout";
 import PageNotFound from "./pages/PageNotFound";
 import Products from "./pages/Products";
+import { ErrorBoundary } from "@sentry/react";
+import Error from "./components/Error";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,7 +64,9 @@ const RouterConfig = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <RouterProvider router={routers} />
+        <ErrorBoundary fallback={() => <Error />}>
+          <RouterProvider router={routers} />
+        </ErrorBoundary>
         <ToastContainer style={{ width: "50px", height: "20px" }} />
       </Provider>
       <ReactQueryDevtools initialIsOpen={true} />
